@@ -74,6 +74,18 @@ app.config(function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, ASS
 			url : '/reportes-ventas',
 			templateUrl: appHelper.templatePath('reportes/ventas.php'),
 		}).
+		state('app.reportes-honorarios', {
+			url : '/reportes-honorarios',
+			templateUrl: appHelper.templatePath('reportes/honorarios.php'),
+			resolve: {
+				resources: function($ocLazyLoad){
+					return $ocLazyLoad.load([
+						ASSETS.tables.rwd,
+						ASSETS.core.bootstrap,
+					]);
+				},
+			}
+		}).
 
 
 		// Logins and Lockscreen
