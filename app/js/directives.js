@@ -4,7 +4,7 @@ angular.module('xenon.directives', []).
 	directive('settingsPane', function(){
 		return {
 			restrict: 'E',
-			templateUrl: appHelper.templatePath('layout/settings-pane'),
+			templateUrl: appHelper.templatePath('layout/settings-pane.html'),
 			controller: 'SettingsPaneCtrl'
 		};
 	}).
@@ -12,14 +12,14 @@ angular.module('xenon.directives', []).
 		return {
 			restrict: 'E',
 			replace: true,
-			templateUrl: appHelper.templatePath('layout/horizontal-menu'),
+			templateUrl: appHelper.templatePath('layout/horizontal-menu.html'),
 			controller: 'HorizontalMenuCtrl'
 		}
 	}).
 	directive('sidebarMenu', function(){
 		return {
 			restrict: 'E',
-			templateUrl: appHelper.templatePath('layout/sidebar-menu'),
+			templateUrl: appHelper.templatePath('layout/sidebar-menu.html'),
 			controller: 'SidebarMenuCtrl'
 		};
 	}).
@@ -27,7 +27,7 @@ angular.module('xenon.directives', []).
 		return {
 			restrict: 'E',
 			replace: true,
-			templateUrl: appHelper.templatePath('layout/sidebar-chat')
+			templateUrl: appHelper.templatePath('layout/sidebar-chat.html')
 		};
 	}).
 	directive('footerChat', function(){
@@ -35,35 +35,35 @@ angular.module('xenon.directives', []).
 			restrict: 'E',
 			replace: true,
 			controller: 'FooterChatCtrl',
-			templateUrl: appHelper.templatePath('layout/footer-chat')
+			templateUrl: appHelper.templatePath('layout/footer-chat.html')
 		};
 	}).
 	directive('sidebarLogo', function(){
 		return {
 			restrict: 'E',
 			replace: true,
-			templateUrl: appHelper.templatePath('layout/sidebar-logo')
+			templateUrl: appHelper.templatePath('layout/sidebar-logo.html')
 		};
 	}).
 	directive('sidebarProfile', function(){
 		return {
 			restrict: 'E',
 			replace: true,
-			templateUrl: appHelper.templatePath('layout/sidebar-profile')
+			templateUrl: appHelper.templatePath('layout/sidebar-profile.html')
 		};
 	}).
 	directive('userInfoNavbar', function(){
 		return {
 			restrict: 'E',
 			replace: true,
-			templateUrl: appHelper.templatePath('layout/user-info-navbar')
+			templateUrl: appHelper.templatePath('layout/user-info-navbar.html')
 		};
 	}).
 	directive('pageTitle', function(){
 		return {
 			restrict: 'E',
 			replace: true,
-			templateUrl: appHelper.templatePath('layout/page-title'),
+			templateUrl: appHelper.templatePath('layout/page-title.html'),
 			link: function(scope, el, attr){
 				scope.title = attr.title;
 				scope.description = attr.description;
@@ -73,7 +73,7 @@ angular.module('xenon.directives', []).
 	directive('siteFooter', function(){
 		return {
 			restrict: 'E',
-			templateUrl: appHelper.templatePath('layout/footer')
+			templateUrl: appHelper.templatePath('layout/footer.html')
 		};
 	}).
 	directive('xeBreadcrumb', function(){
