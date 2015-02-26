@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-controller="honorariosCtrl">
 	<div class="panel-heading">
 		<h3 class="panel-title">Honorarios Médicos</h3>
 		
@@ -19,11 +19,6 @@
 		</div>
 	</div>
 	<div class="panel-body">
-
-		<?php
-			print_r($_POST);
-		?>
-		
 		<form method="post">
 			<div class="row">
 				<div class="col-md-6">
@@ -53,7 +48,6 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<button type="submit" class="btn btn-turquoise"><span class="fa-search"></span> Buscar</button>
-						<input type="submit" value="submit">
 					</div>
 				</div>
 			</div>
@@ -92,6 +86,19 @@
 
 	</div>
 </div>
+
+<script>
+	
+	function honorariosCtrl($scope, $http){
+		$scope.url = 'getHonorarios.php';
+
+		$scope.getHonorarios = function(){
+			
+		}
+
+	}
+
+</script>
 
 <script type="text/javascript">
 	// This JavaScript Will Replace Checkboxes in dropdown toggles

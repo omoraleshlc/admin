@@ -75,9 +75,7 @@
 											{
 												window.location.hash = '#/app/dashboard';
 												//$('body').removeClass('login-page login-light lockscreen-page');
-																							}
-																						else
-											{
+											}else{
 												toastr.error("password inválido, intenta de nuevo. User and password is <strong>demo/demo</strong> :)", "Login inválido!", opts);
 												$(form).find('#passwd').select();
 											}
