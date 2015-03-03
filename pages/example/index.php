@@ -30,12 +30,12 @@
                             <div class="panel-heading">Button Colors</div>
                             <div class="panel-body">
 
-                                <button class="btn btn-blue"><i class="fa-link"></i> Agregar</button>
-                                <button class="btn btn-warning"><i class="fa-link"></i> Actualizar</button>
-                                <button class="btn btn-red"><i class="fa-link"></i> Eliminar</button>
-                                <button class="btn btn-white"><i class="fa-link"></i> Nuevo</button>
-                                <button class="btn btn-black"><i class="fa-link"></i> Cancelar</button>
-                                <button class="btn btn-info"><i class="fa-link"></i> Buscar</button>
+                                <button class="btn btn-blue"><i class="fa-plus"></i> Agregar</button>
+                                <button class="btn btn-warning"><i class="fa-refresh"></i> Actualizar</button>
+                                <button class="btn btn-red"><i class="fa-trash"></i> Eliminar</button>
+                                <button class="btn btn-white"><i class="fa-file"></i> Nuevo</button>
+                                <button class="btn btn-black"><i class="fa-close"></i> Cancelar</button>
+                                <button class="btn btn-info"><i class="fa-search"></i> Buscar</button>
 
                             </div>
                         </div>
