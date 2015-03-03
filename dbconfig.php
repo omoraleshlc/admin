@@ -1,23 +1,10 @@
 <?php
 
-  $production = false;
-  
-	$config  = array();
-  
-  if($production){
+  $config = array();
 
-    $config['host']  = 'localhost';
-  	$config['db']    = 'sima';
-  	$config['user']  = 'root';
-  	$config['pass']  = '';
-
-  }else{
-
-    $config['host']  = 'localhost';
-    $config['db']    = 'sima'; 
-    $config['user']  = 'root';     
-    $config['pass']  = '';     
-
-  }
+  $config['host']  = '127.0.0.1';  //database host
+  $config['db']    = 'sima';       //database name
+  $config['user']  = 'root';       //database user
+  $config['pass']  = 'root';       //database password
   
 ?>
