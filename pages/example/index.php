@@ -16,7 +16,34 @@
 
                 <?php require_once("../layouts/navbar.php"); ?>
 
-                Here starts everything :D
+                <div class="page-title">
+                    <div class="title-env">
+                        <h1 class="title">Main Title</h1>
+                        <p class="description">Some description</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Button Colors</div>
+                            <div class="panel-body">
+
+                                <button class="btn btn-blue"><i class="fa-link"></i> Agregar</button>
+                                <button class="btn btn-warning"><i class="fa-link"></i> Actualizar</button>
+                                <button class="btn btn-red"><i class="fa-link"></i> Eliminar</button>
+                                <button class="btn btn-white"><i class="fa-link"></i> Nuevo</button>
+                                <button class="btn btn-black"><i class="fa-link"></i> Cancelar</button>
+                                <button class="btn btn-info"><i class="fa-link"></i> Buscar</button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                
                 
                 <?php require_once("../layouts/footer.php"); ?>
             </div>
@@ -28,11 +55,6 @@
 	</div>
         
     <?php require_once("../layouts/bottom.php"); ?>
-
-    <!-- Imported scripts on this page -->
-    <script src="../../resources/xenon-theme/js/xenon-widgets.js"></script>
-    <script src="../../resources/xenon-theme/js/devexpress-web-14.1/js/globalize.min.js"></script>
-    <script src="../../resources/xenon-theme/js/devexpress-web-14.1/js/dx.chartjs.js"></script>
 
 </body>
 </html>
