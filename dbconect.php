@@ -1,7 +1,7 @@
 <?php
 
-    require_once("/Constantes.php");
-    //require_once("dbconfig.php");
+    //require_once("/Constantes.php");
+    require_once("dbconfig.php");
 
     global $conn;
 
