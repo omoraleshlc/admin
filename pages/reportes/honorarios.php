@@ -4,8 +4,14 @@
 
 
 ?>
+
+
+<script src="../js/scripts/autocomplete.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="../js/stylesheets/autocomplete.css" type="text/css" />
+        
+        
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<?php require_once("../layouts/head.php"); ?>
 </head>
@@ -67,7 +73,7 @@
 
                                          <br><br><br>
                                  <div class="col-sm-2">
-                                        <button type="submit" name="enviarDatos" value="Enviar" class="btn btn-blue">Buscar</button>
+                                        <button type="submit" name="enviarDatos" value="send" class="btn btn-blue">Validate</button>
                                         <button type="reset" class="btn btn-white">Reset</button>
                                  </div>
                                 </form>                        
@@ -83,7 +89,7 @@
                     
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Médicos (Pacientes Ambulatorios)</h3>
+                                
                                 
                                 <div class="panel-options">
                                     
@@ -125,59 +131,23 @@ $yearF=substr($_POST['fechas'],19,4);
 $fechaFinal=$yearF.'-'.$mesF.'-'.$diaF;
 
 
-//$medicos=new medicos();
-//$hmedicos->selectMedico($_SESSION['entidad'],$fechaInicial,$fechaFinal,$basedatos);
 
 
-
-
-global $conn;
-/*
-        try {
-
-             $stmt = $conn->prepare("
-				select * 
-				from cargosCuentaPaciente 
-				where entidad = :entidad and 
-                                medico = :medico and 
-                                fecha1 = :fechaInicial and 
-                                fecha1 = :fechaFinal" );
-
-            $stmt->execute(array(":entidad" => $entidad,":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
-            
-            $results = $stmt->fetchAll(PDO::FETCH_OBJ);
-            while ($row = $results->stmt()) {
-            printf("%s (%s,%s)\n", $row[0], $row[1], $row[2]);
-            }
-            if ($results) {
-
-                $this->map($results[0]);
-
-                return true;
-            } else {
-                return false;
-            }
-        } catch (PDOException $e) {
-            echo 'ERROR: - medicos.php|selectMedico' . $e->getMessage();
-        }*/
-        
-        
-        
-        
+global $conn;        
 $medico='HLCJVR';   
-
-
 $query = $conn->prepare("
 				select * 
 				from cargosCuentaPaciente 
 				where entidad = :entidad and 
                                 medico = :medico and 
                                 fecha1 = :fechaInicial and 
-                                fecha1 = :fechaFinal" );
- 
+                                fecha1 = :fechaFinal
+                                and
+                                tipoPaciente='externo' 
+                                order by folioVenta,fechaCargo,fechaCierre ASC" );
  
  $query->execute(array(":entidad" => $entidad,":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
-     
+   
       /*for($i=0; $row = $query->fetch(); $i++){
         echo $i." - ".$row['descripcionMedico']."<br/>";
       }*/
@@ -192,7 +162,7 @@ $query = $conn->prepare("
                             <div class="panel-body">
                                 
                                 <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
-                                
+                                <h4>Médicos (Pacientes Ambulatorios)</h4>
                                     <table cellspacing="0" class="table table-small-font table-bordered table-striped">
                                         <thead>
                                     <tr>
@@ -306,6 +276,381 @@ $query = $conn->prepare("
                                             
                                         </tbody>
                                     </table>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                
+                                
+<?php
+#statement de pacientes internos
+$query1 = $conn->prepare("
+				select * 
+				from cargosCuentaPaciente 
+				where entidad = :entidad and 
+                                medico = :medico and 
+                                fecha1 = :fechaInicial and 
+                                fecha1 = :fechaFinal
+                                and
+                                (tipoPaciente='interno' or tipoPaciente='urgencias')  
+                                order by folioVenta,fechaCargo ASC
+" );
+$query1->execute(array(":entidad" => $entidad,":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
+?>
+                                    
+                                    <br>
+                                    <h4>Pacientes Internos</h4>
+                                    
+<table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                        <thead>
+<tr >
+         
+                  <th width="2" >
+         <div align="left">#</div>
+    </th>
+
+      <th width="2" >
+         <div align="left">MovSis</div>
+    </th>         
+         
+         <th width="60" >
+         <div align="left">FechaCargo</div>
+       </th>
+         
+       <th width="52" >
+         <div align="left">Folio</div>
+      </th>
+       <th width="490" >
+           <div align="left">Paciente</div>
+    </th>
+    
+ <th width="400" ><div align="left" >TipoPago</div></th>    
+ <!--<th width="60" ><div align="left" >TipoCobro</div></th>-->
+ <th width="66" ><div align="left" >StatusCuenta</div></th>
+    <th width="60" ><div align="left" >Rec/Mov</div></th>
+   
+ <th width="60" ><div align="right" >Importe</div></th>   
+ <th width="60" ><div align="right" >StatusCuenta</div></th> 
+ <th width="60" ><div align="right" >StatusPago</div></th>     
+<th width="60" ><div align="right" >FechaPago</div></th>      
+     </tr>                                    
+                                        </thead>
+                                        
+                                        
+                                        
+                                        <tbody>
+                                            
+                                         <?php for ($i = 0; $myrow = $query1->fetch(); $i++) { ?>
+                        <tr >
+
+
+                            <td align="left" >
+                                <?php
+                                echo $i;
+                                ?>
+                            </td>
+
+
+
+                            <td align="left" >
+                                <?php
+                                echo $myrow['keyCAP'];
+                                ?>
+                            </td>              
+
+
+
+                            <td align="left" >
+                                <?php
+                                if ($myrow['fechaCargo'] != NULL) {
+                                    echo $myrow['fechaCargo'];
+                                } else {
+                                    echo '---';
+                                }
+                                ?>
+                            </td>
+
+
+                            <td align="left" >
+
+                                <?php
+                                echo $myrow['folioVenta'];
+                                ?></td>
+
+
+
+
+
+
+                            <td align="left" >
+                    <?php
+                    $qci = $conn->prepare("
+                    Select paciente From clientesInternos WHERE entidad = :entidad and folioVenta = :folioVenta");
+
+                    $qci->execute(array(":entidad" => $entidad, ":folioVenta" => $myrow['folioVenta']));
+
+                    for ($ic = 0; $ic = $qci->fetch(); $ic++) {
+                        echo $ic['paciente'];
+                    }
+                    ?>
+                            </td>
+
+
+
+                            <td align="left" >
+<?php
+/*if ($myrow['tipoPaciente'] == 'externo') {
+$sSQLtp = "Select tipoPago,numRecibo From cargosCuentaPaciente WHERE entidad='" . $entidad . "' 
+and folioVenta='" . $myrow['folioVenta'] . "' 
+and gpoProducto=''
+and
+tipoPago!=''
+group by tipoPago        
+";
+$resulttp = mysql_db_query($basedatos, $sSQLtp);
+$aa = NULL;
+while ($myrowtp = mysql_fetch_array($resulttp)) {
+
+echo $myrowtp['tipoPago'];
+echo '<br>';
+}
+} else {
+
+$sSQL30 = "Select * From clientes WHERE entidad='" . $entidad . "' and numCliente='" . $myrow['seguro'] . "' ";
+$result30 = mysql_db_query($basedatos, $sSQL30);
+$myrow30 = mysql_fetch_array($result30);
+
+if ($myrow['cantidadAseguradora'] > 0 and $myrow['cantidadParticular'] > 0) {
+echo 'Particular, ' . $myrow30['nomCliente'];
+} else if ($myrow['cantidadAseguradora'] > 0) {
+echo $myrow30['nomCliente'];
+} else
+if ($myrow['cantidadParticular'] > 0) {
+
+echo 'Particular';
+}
+}*/
+?>
+                            </td>
+
+
+
+
+                            <!--    
+                        <td align="left" >
+<?php
+/*if ($myrow['cantidadAseguradora'] > 0) {
+echo 'CxC';
+}
+
+if ($myrow['cantidadParticular'] > 0) {
+
+
+if ($myrow['cantidadAseguradora'] > 0) {
+echo ',';
+}
+echo 'Particular';
+}*/
+?>	   
+
+                                </td>       
+                           </td-->      
+
+
+
+
+                            <td   align="left" >
+<?php
+//echo $myrow['naturaleza'];
+/*if ($myrow['naturaleza'] == 'C') {
+echo 'Normal';
+} elseif ($myrow['naturaleza'] == 'A') {
+echo 'Devolucion';
+}*/
+?>	   
+
+                            </td>        
+
+
+
+
+
+
+
+
+
+
+
+                            <td align="left" >
+<?php
+/*if ($myrow['tipoPaciente'] == 'externo') {
+echo 'R' . $myrow1a['numRecibo'];
+} else {
+echo 'M' . $myrow['keyCAP'];
+}*/
+?>	   
+
+                            </td>
+
+
+
+
+
+                            <td align="right" >
+<?php
+/*if ($myrow['naturaleza'] == 'C') {
+$imp[0]+=($myrow['precioVenta'] * $myrow['cantidad']) + ($myrow['iva'] * $myrow['cantidad']);
+
+echo '$' . number_format($myrow['precioVenta'] * $myrow['cantidad'], 2);
+} elseif ($myrow['naturaleza'] == 'A') {
+echo '<div class="error">$' . number_format($myrow['precioVenta'] * $myrow['cantidad'], 2) . '</div>';
+$devs[0]+=($myrow['precioVenta'] * $myrow['cantidad']) + ($myrow['iva'] * $myrow['cantidad']);
+}*/
+?>	   
+
+                            </td>        
+
+
+
+
+                            <td align="right" >
+                                <?php
+                                //echo $myrow1['statusCuenta'];
+                                ?>	  
+                            </td>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td align="center" >
+<?php
+/*if ($myrow1['seguro'] != '' and $myrow1['seguro'] != '0') {
+$sSQLap = "
+SELECT *
+FROM
+facturasAplicadas
+WHERE
+entidad='" . $entidad . "'
+and
+folioVenta='" . $myrow['folioVenta'] . "'
+
+";
+
+
+$resultap = mysql_db_query($basedatos, $sSQLap);
+$myrowap = mysql_fetch_array($resultap);
+
+if ($myrowap['statusPago'] == 'pagado') {
+// echo '<p style="color:blue;margin-left:20px;">Pagado</p> ';
+if ($myrow['naturaleza'] == 'C') {
+$imp1[0]+=($myrow['precioVenta'] * $myrow['cantidad']) + ($myrow['iva'] * $myrow['cantidad']);
+
+echo '$' . number_format($myrow['precioVenta'] * $myrow['cantidad'], 2);
+} elseif ($myrow['naturaleza'] == 'A') {
+//echo '<div class="error">$'.number_format($myrow['precioVenta']*$myrow['cantidad'],2).'</div>';
+$devs1[0]+=($myrow['precioVenta'] * $myrow['cantidad']) + ($myrow['iva'] * $myrow['cantidad']);
+}
+} elseif ($myrowap['statusPago']) {
+echo $myrowap['statusPago'];
+} else {
+echo '---';
+}
+$tipoPago = 'seguro';
+} else {
+if ($myrow1['statusCuenta'] == 'cerrada') {
+//echo '<p style="color:green;margin-left:20px;">Pagado</p> ';
+
+if ($myrow['naturaleza'] == 'C') {
+$imp1[0]+=($myrow['precioVenta'] * $myrow['cantidad']) + ($myrow['iva'] * $myrow['cantidad']);
+
+echo '$' . number_format($myrow['precioVenta'] * $myrow['cantidad'], 2);
+} elseif ($myrow['naturaleza'] == 'A') {
+// echo '<div class="error">$'.number_format($myrow['precioVenta']*$myrow['cantidad'],2).'</div>';
+$devs1[0]+=($myrow['precioVenta'] * $myrow['cantidad']) + ($myrow['iva'] * $myrow['cantidad']);
+}
+} elseif ($myrow1['statusCuenta']) {
+echo $myrow1['statusCuenta'];
+} else {
+echo '---';
+}
+$tipoPago = 'particular';
+}*/
+?>	  
+
+                            </td>       
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td align="center" >
+                                <?php
+                                /*if ($tipoPago == 'seguro') {
+                                    if ($myrowap['fechaPago']) {
+                                        echo cambia_a_normal($myrowap['fechaPago']);
+                                    } else {
+                                        echo '---';
+                                    }
+                                } else {
+                                    if ($myrow1['fechaCierre']) {
+                                        echo cambia_a_normal($myrow1['fechaCierre']);
+                                    } else {
+                                        echo '---';
+                                    }
+                                }*/
+                                ?>
+                            </td>  
+
+
+
+
+
+                        </tr>
+                                            <?php } ?>
+                                            
+                                        </tbody>
+                                    </table>                                    
+                                    
+                                    
+                                    
+                                    
                                 
                                 </div>
                                 
