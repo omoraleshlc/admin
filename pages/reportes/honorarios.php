@@ -7,6 +7,9 @@
 </head>
 
 <body class="page-body">
+    
+<script src="../js/scripts/autocomplete.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="../js/stylesheets/autocomplete.css" type="text/css" />    
 
 	<div class="page-container">
             
@@ -28,10 +31,49 @@
                 <!-- Responsive Table -->
                 <div class="row">
                     <div class="col-md-12">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <div class="panel panel-default">
+                            <div class="panel-heading">                        
+                                
+                                
+                                <form role="form" class="form-horizontal" method="post">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="field-1">Escoje el rango de fechas</label>
+
+                                        <div class="col-sm-9">
+
+                                            <input type="text" id="field-1" name="fechas" class="form-control daterange" />
+
+                                        </div>
+                                    </div>
+                                    
+                                    
+
+                                    
+                                    <div class="form-group">
+                                        <button type="submit" name="enviarDatos" class="btn btn-blue">Validate</button>
+                                        <button type="reset" class="btn btn-white">Reset</button>
+                                    </div>
+                                </form>                        
+                            </div>
+                        </div>
+
+                        
+                        
+                        
+                        
+                        
+                        
                     
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Adjustable Responsive Table</h3>
+                                <h3 class="panel-title">Lista de Médicos</h3>
                                 
                                 <div class="panel-options">
                                     
@@ -49,6 +91,12 @@
                                     </a>
                                 </div>
                             </div>
+                            
+                            
+                            
+                            
+                            
+                            
                             <div class="panel-body">
                                 
                                 <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
@@ -418,13 +466,29 @@
 		<div class="loader-2"></div>
 	</div>
 	
-        
-    <!-- Imported scripts on this page -->
-    <script src="../../resources/xenon-theme/js/xenon-widgets.js"></script>
-    <script src="../../resources/xenon-theme/js/devexpress-web-14.1/js/globalize.min.js"></script>
-    <script src="../../resources/xenon-theme/js/devexpress-web-14.1/js/dx.chartjs.js"></script>
-    <script src="../../resources/xenon-theme/js/toastr/toastr.min.js"></script>
-        
+   <script>
+		new Autocomplete("nomMedico", function() { 
+			this.setValue = function( id ) {
+				document.getElementsByName("medico")[0].value = id;
+			}
+			
+			// If the user modified the text but doesn't select any new item, then clean the hidden value.
+			if ( this.isModified )
+				this.setValue("");
+			
+			// return ; will abort current request, mainly used for validation.
+			// For example: require at least 1 char if this request is not fired by search icon click
+			if ( this.value.length < 1 && this.isNotClick ) 
+				return ;
+			
+			// Replace .html to .php to get dynamic results.
+			// .html is just a sample for you
+			return "../cargos/medicosCedulax.php?entidad=<?php echo $entidad;?>&q=" + this.value;
+			// return "completeEmpName.php?q=" + this.value;
+		});	
+	</script>
+    
+    
     <?php require_once("../layouts/bottom.php"); ?>
 
 </body>

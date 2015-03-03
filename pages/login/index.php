@@ -84,7 +84,7 @@
 											pct: 100,
 											finish: function(){
 												
-												console.log(resp);
+												//console.log(resp);
 												// Redirect after successful login page (when progress bar reaches 100%)
 												if($.trim(resp) == 'success!'){
 													window.location.href = '../dashboard/';

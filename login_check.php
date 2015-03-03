@@ -7,7 +7,7 @@
 	require_once("classes/usuario.php"); // class
 
 	$usuario = new usuario();
-
+        
 	$usuario_form 		= $_POST['username'];	
 	$password_form 		= $_POST['passwd'];
 
