@@ -22,6 +22,8 @@
         $_SESSION['timeout'] = time();
     }
     
+    
+    require_once("../../dbconect.php");
 ?>
 
 

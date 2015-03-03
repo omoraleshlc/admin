@@ -11,7 +11,7 @@
         <div class="footer-text">
             &copy; 2015
             <strong>SMA</strong> 
-            - Hospital la Carlota
+            - Entidad: <?php echo $_SESSION['entidad'];?>. Hospital la Carlota
         </div>
         
         <!-- Go to Top Link, just add rel="go-top" to any link to add this functionality -->

@@ -1,5 +1,9 @@
-<?php require_once("../../session_check.php"); ?>
+<?php require_once("../../session_check.php"); require("../../classes/medicos.php");?>
+<?php
+#iniciando variables
 
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,8 +12,7 @@
 
 <body class="page-body">
     
-<script src="../js/scripts/autocomplete.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="../js/stylesheets/autocomplete.css" type="text/css" />    
+ 
 
 	<div class="page-container">
             
@@ -44,22 +47,29 @@
                                 <form role="form" class="form-horizontal" method="post">
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="field-1">Escoje el rango de fechas</label>
+                                        <label class="col-sm-2 control-label" for="field-1">Escoje el rango de fechas</label>
 
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-2">
 
-                                            <input type="text" id="field-1" name="fechas" class="form-control daterange" />
+                                            <input type="text" id="field-1" name="fechas" value="" class="form-control daterange" />
 
                                         </div>
-                                    </div>
+                                        
+                                        <br><br>
+                                         <label class="col-sm-2 control-label" for="field-1">Escriba el nombre del médico</label>
+                                        
+                                         <div class="col-sm-2">
+                                            <input name="nomMedico" type="text" value="" size="40" />
+                                            <input name="medico" type="hidden" value="<?php echo $_POST['medico']; ?>" size="40" />                                        
+                                        </div>
                                     
                                     
 
-                                    
-                                    <div class="form-group">
-                                        <button type="submit" name="enviarDatos" class="btn btn-blue">Validate</button>
+                                         <br><br><br>
+                                 <div class="col-sm-2">
+                                        <button type="submit" name="enviarDatos" value="Enviar" class="btn btn-blue">Buscar</button>
                                         <button type="reset" class="btn btn-white">Reset</button>
-                                    </div>
+                                 </div>
                                 </form>                        
                             </div>
                         </div>
@@ -73,7 +83,7 @@
                     
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Lista de Médicos</h3>
+                                <h3 class="panel-title">Médicos (Pacientes Ambulatorios)</h3>
                                 
                                 <div class="panel-options">
                                     
@@ -94,345 +104,206 @@
                             
                             
                             
+<?php
+
+$devs[0]=null;
+$imp[0]=null;
+$i=1;
+$ic=1;
+
+$medico=$_POST['nomMedico'];    
+$entidad=$_SESSION['entidad'];
+$diaI=substr($_POST['fechas'],0,2);
+$mesI=substr($_POST['fechas'],3,2);
+$yearI=substr($_POST['fechas'],6,4);
+$fechaInicial=$yearI.'-'.$mesI.'-'.$diaI;
+
+
+$diaF=substr($_POST['fechas'],13,2);
+$mesF=substr($_POST['fechas'],16,2);
+$yearF=substr($_POST['fechas'],19,4);
+$fechaFinal=$yearF.'-'.$mesF.'-'.$diaF;
+
+
+//$medicos=new medicos();
+//$hmedicos->selectMedico($_SESSION['entidad'],$fechaInicial,$fechaFinal,$basedatos);
+
+
+
+
+global $conn;
+/*
+        try {
+
+             $stmt = $conn->prepare("
+				select * 
+				from cargosCuentaPaciente 
+				where entidad = :entidad and 
+                                medico = :medico and 
+                                fecha1 = :fechaInicial and 
+                                fecha1 = :fechaFinal" );
+
+            $stmt->execute(array(":entidad" => $entidad,":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
+            
+            $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+            while ($row = $results->stmt()) {
+            printf("%s (%s,%s)\n", $row[0], $row[1], $row[2]);
+            }
+            if ($results) {
+
+                $this->map($results[0]);
+
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            echo 'ERROR: - medicos.php|selectMedico' . $e->getMessage();
+        }*/
+        
+        
+        
+        
+$medico='HLCJVR';   
+
+
+$query = $conn->prepare("
+				select * 
+				from cargosCuentaPaciente 
+				where entidad = :entidad and 
+                                medico = :medico and 
+                                fecha1 = :fechaInicial and 
+                                fecha1 = :fechaFinal" );
+ 
+ 
+ $query->execute(array(":entidad" => $entidad,":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
+     
+      /*for($i=0; $row = $query->fetch(); $i++){
+        echo $i." - ".$row['descripcionMedico']."<br/>";
+      }*/
+
+   
+        
+        
+       
+?>
                             
-                            
-                            
+                            <?php if($_POST['enviarDatos']!=''){?>
                             <div class="panel-body">
                                 
                                 <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
                                 
                                     <table cellspacing="0" class="table table-small-font table-bordered table-striped">
                                         <thead>
-                                            <tr>
-                                                <th>Company</th>
-                                                <th data-priority="1">Last Trade</th>
-                                                <th data-priority="3">Trade Time</th>
-                                                <th data-priority="1">Change</th>
-                                                <th data-priority="3">Prev Close</th>
-                                                <th data-priority="3">Open</th>
-                                                <th data-priority="6">Bid</th>
-                                            </tr>
+                                    <tr>
+                                    <th >
+                                        <div align="left">#</div>
+                                    </th>
+
+
+                                    <th  >
+                                    <div align="left">FechaCierre</div>
+                                    </th>
+
+                                    <th  >
+                                    <div align="left">Folio</div>
+                                    </th>
+                                    
+                                    <th >
+                                    <div align="left">Paciente</div>
+                                    </th>
+
+                                    <th  >
+                                    <div align="left">Seguro</div>
+                                    </th>
+
+                                    <th ><div align="left" >TipoPago</div></th>    
+                                    <!--<th width="60" ><div align="left" >TipoCobro</div></th>-->
+                                    <th  ><div align="left" >StatusCuenta</div></th>
+                                    <th  ><div align="left" >Rec/Mov</div></th>
+
+                                    <th  ><div align="right" >Importe</div></th>  
+                                    </tr>
                                         </thead>
+                                        
+                                        
+                                        
                                         <tbody>
+                                            
+                                            <?php for($i=0; $row = $query->fetch(); $i++){ ?>
                                             <tr>
-                                                <th>GOOG <span class="co-name">Google Inc.</span></th>
-                                                <td>597.74</td>
-                                                <td>12:12PM</td>
-                                                <td>14.81 (2.54%)</td>
-                                                <td>582.93</td>
-                                                <td>597.95</td>
-                                                <td>597.73 x 100</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AAPL <span class="co-name">Apple Inc.</span></th>
-                                                <td>378.94</td>
-                                                <td>12:22PM</td>
-                                                <td>5.74 (1.54%)</td>
-                                                <td>373.20</td>
-                                                <td>381.02</td>
-                                                <td>378.92 x 300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AMZN <span class="co-name">Amazon.com Inc.</span></th>
-                                                <td>191.55</td>
-                                                <td>12:23PM</td>
-                                                <td>3.16 (1.68%)</td>
-                                                <td>188.39</td>
-                                                <td>194.99</td>
-                                                <td>191.52 x 300</td>
-                                            </tr>        
-                                            <tr>
-                                                <th>ORCL <span class="co-name">Oracle Corporation</span></th>
-                                                <td>31.15</td>
-                                                <td>12:44PM</td>
-                                                <td>1.41 (4.72%)</td>
-                                                <td>29.74</td>
-                                                <td>30.67</td>
-                                                <td>31.14 x 6500</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>MSFT <span class="co-name">Microsoft Corporation</span></th>
-                                                <td>25.50</td>
-                                                <td>12:27PM</td>
-                                                <td>0.66 (2.67%)</td>
-                                                <td>24.84</td>
-                                                <td>25.37</td>
-                                                <td>25.50 x 71100</td>
-                                            </tr>
-                                            <tr>
-                                                <th>CSCO <span class="co-name">Cisco Systems, Inc.</span></th>
-                                                <td>18.65</td>
-                                                <td>12:45PM</td>
-                                                <td>0.97 (5.49%)</td>
-                                                <td>17.68</td>
-                                                <td>18.23</td>
-                                                <td>18.65 x 10300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>YHOO <span class="co-name">Yahoo! Inc.</span></th>
-                                                <td>15.81</td>
-                                                <td>12:25PM</td>
-                                                <td>0.11 (0.67%)</td>
-                                                <td>15.70</td>
-                                                <td>15.94</td>
-                                                <td>15.79 x 6100</td>
-                                            </tr>
-                                            <!-- Repeat -->
-                                            <tr>
-                                                <th>GOOG <span class="co-name">Google Inc.</span></th>
-                                                <td>597.74</td>
-                                                <td>12:12PM</td>
-                                                <td>14.81 (2.54%)</td>
-                                                <td>582.93</td>
-                                                <td>597.95</td>
-                                                <td>597.73 x 100</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AAPL <span class="co-name">Apple Inc.</span></th>
-                                                <td>378.94</td>
-                                                <td>12:22PM</td>
-                                                <td>5.74 (1.54%)</td>
-                                                <td>373.20</td>
-                                                <td>381.02</td>
-                                                <td>378.92 x 300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AMZN <span class="co-name">Amazon.com Inc.</span></th>
-                                                <td>191.55</td>
-                                                <td>12:23PM</td>
-                                                <td>3.16 (1.68%)</td>
-                                                <td>188.39</td>
-                                                <td>194.99</td>
-                                                <td>191.52 x 300</td>
-                                            </tr>        
-                                            <tr>
-                                                <th>ORCL <span class="co-name">Oracle Corporation</span></th>
-                                                <td>31.15</td>
-                                                <td>12:44PM</td>
-                                                <td>1.41 (4.72%)</td>
-                                                <td>29.74</td>
-                                                <td>30.67</td>
-                                                <td>31.14 x 6500</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>MSFT <span class="co-name">Microsoft Corporation</span></th>
-                                                <td>25.50</td>
-                                                <td>12:27PM</td>
-                                                <td>0.66 (2.67%)</td>
-                                                <td>24.84</td>
-                                                <td>25.37</td>
-                                                <td>25.50 x 71100</td>
-                                            </tr>
-                                            <tr>
-                                                <th>CSCO <span class="co-name">Cisco Systems, Inc.</span></th>
-                                                <td>18.65</td>
-                                                <td>12:45PM</td>
-                                                <td>0.97 (5.49%)</td>
-                                                <td>17.68</td>
-                                                <td>18.23</td>
-                                                <td>18.65 x 10300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>YHOO <span class="co-name">Yahoo! Inc.</span></th>
-                                                <td>15.81</td>
-                                                <td>12:25PM</td>
-                                                <td>0.11 (0.67%)</td>
-                                                <td>15.70</td>
-                                                <td>15.94</td>
-                                                <td>15.79 x 6100</td>
-                                            </tr>
-                                            <!-- Repeat -->
-                                            <tr>
-                                                <th>GOOG <span class="co-name">Google Inc.</span></th>
-                                                <td>597.74</td>
-                                                <td>12:12PM</td>
-                                                <td>14.81 (2.54%)</td>
-                                                <td>582.93</td>
-                                                <td>597.95</td>
-                                                <td>597.73 x 100</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AAPL <span class="co-name">Apple Inc.</span></th>
-                                                <td>378.94</td>
-                                                <td>12:22PM</td>
-                                                <td>5.74 (1.54%)</td>
-                                                <td>373.20</td>
-                                                <td>381.02</td>
-                                                <td>378.92 x 300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AMZN <span class="co-name">Amazon.com Inc.</span></th>
-                                                <td>191.55</td>
-                                                <td>12:23PM</td>
-                                                <td>3.16 (1.68%)</td>
-                                                <td>188.39</td>
-                                                <td>194.99</td>
-                                                <td>191.52 x 300</td>
-                                            </tr>        
-                                            <tr>
-                                                <th>ORCL <span class="co-name">Oracle Corporation</span></th>
-                                                <td>31.15</td>
-                                                <td>12:44PM</td>
-                                                <td>1.41 (4.72%)</td>
-                                                <td>29.74</td>
-                                                <td>30.67</td>
-                                                <td>31.14 x 6500</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>MSFT <span class="co-name">Microsoft Corporation</span></th>
-                                                <td>25.50</td>
-                                                <td>12:27PM</td>
-                                                <td>0.66 (2.67%)</td>
-                                                <td>24.84</td>
-                                                <td>25.37</td>
-                                                <td>25.50 x 71100</td>
-                                            </tr>
-                                            <tr>
-                                                <th>CSCO <span class="co-name">Cisco Systems, Inc.</span></th>
-                                                <td>18.65</td>
-                                                <td>12:45PM</td>
-                                                <td>0.97 (5.49%)</td>
-                                                <td>17.68</td>
-                                                <td>18.23</td>
-                                                <td>18.65 x 10300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>YHOO <span class="co-name">Yahoo! Inc.</span></th>
-                                                <td>15.81</td>
-                                                <td>12:25PM</td>
-                                                <td>0.11 (0.67%)</td>
-                                                <td>15.70</td>
-                                                <td>15.94</td>
-                                                <td>15.79 x 6100</td>
-                                            </tr>
-                                            <!-- Repeat -->
-                                            <tr>
-                                                <th>GOOG <span class="co-name">Google Inc.</span></th>
-                                                <td>597.74</td>
-                                                <td>12:12PM</td>
-                                                <td>14.81 (2.54%)</td>
-                                                <td>582.93</td>
-                                                <td>597.95</td>
-                                                <td>597.73 x 100</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AAPL <span class="co-name">Apple Inc.</span></th>
-                                                <td>378.94</td>
-                                                <td>12:22PM</td>
-                                                <td>5.74 (1.54%)</td>
-                                                <td>373.20</td>
-                                                <td>381.02</td>
-                                                <td>378.92 x 300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AMZN <span class="co-name">Amazon.com Inc.</span></th>
-                                                <td>191.55</td>
-                                                <td>12:23PM</td>
-                                                <td>3.16 (1.68%)</td>
-                                                <td>188.39</td>
-                                                <td>194.99</td>
-                                                <td>191.52 x 300</td>
-                                            </tr>        
-                                            <tr>
-                                                <th>ORCL <span class="co-name">Oracle Corporation</span></th>
-                                                <td>31.15</td>
-                                                <td>12:44PM</td>
-                                                <td>1.41 (4.72%)</td>
-                                                <td>29.74</td>
-                                                <td>30.67</td>
-                                                <td>31.14 x 6500</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>MSFT <span class="co-name">Microsoft Corporation</span></th>
-                                                <td>25.50</td>
-                                                <td>12:27PM</td>
-                                                <td>0.66 (2.67%)</td>
-                                                <td>24.84</td>
-                                                <td>25.37</td>
-                                                <td>25.50 x 71100</td>
-                                            </tr>
-                                            <tr>
-                                                <th>CSCO <span class="co-name">Cisco Systems, Inc.</span></th>
-                                                <td>18.65</td>
-                                                <td>12:45PM</td>
-                                                <td>0.97 (5.49%)</td>
-                                                <td>17.68</td>
-                                                <td>18.23</td>
-                                                <td>18.65 x 10300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>YHOO <span class="co-name">Yahoo! Inc.</span></th>
-                                                <td>15.81</td>
-                                                <td>12:25PM</td>
-                                                <td>0.11 (0.67%)</td>
-                                                <td>15.70</td>
-                                                <td>15.94</td>
-                                                <td>15.79 x 6100</td>
-                                            </tr>
-                                            <!-- Repeat -->
-                                            <tr>
-                                                <th>GOOG <span class="co-name">Google Inc.</span></th>
-                                                <td>597.74</td>
-                                                <td>12:12PM</td>
-                                                <td>14.81 (2.54%)</td>
-                                                <td>582.93</td>
-                                                <td>597.95</td>
-                                                <td>597.73 x 100</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AAPL <span class="co-name">Apple Inc.</span></th>
-                                                <td>378.94</td>
-                                                <td>12:22PM</td>
-                                                <td>5.74 (1.54%)</td>
-                                                <td>373.20</td>
-                                                <td>381.02</td>
-                                                <td>378.92 x 300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>AMZN <span class="co-name">Amazon.com Inc.</span></th>
-                                                <td>191.55</td>
-                                                <td>12:23PM</td>
-                                                <td>3.16 (1.68%)</td>
-                                                <td>188.39</td>
-                                                <td>194.99</td>
-                                                <td>191.52 x 300</td>
-                                            </tr>        
-                                            <tr>
-                                                <th>ORCL <span class="co-name">Oracle Corporation</span></th>
-                                                <td>31.15</td>
-                                                <td>12:44PM</td>
-                                                <td>1.41 (4.72%)</td>
-                                                <td>29.74</td>
-                                                <td>30.67</td>
-                                                <td>31.14 x 6500</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>MSFT <span class="co-name">Microsoft Corporation</span></th>
-                                                <td>25.50</td>
-                                                <td>12:27PM</td>
-                                                <td>0.66 (2.67%)</td>
-                                                <td>24.84</td>
-                                                <td>25.37</td>
-                                                <td>25.50 x 71100</td>
-                                            </tr>
-                                            <tr>
-                                                <th>CSCO <span class="co-name">Cisco Systems, Inc.</span></th>
-                                                <td>18.65</td>
-                                                <td>12:45PM</td>
-                                                <td>0.97 (5.49%)</td>
-                                                <td>17.68</td>
-                                                <td>18.23</td>
-                                                <td>18.65 x 10300</td>
-                                            </tr>       
-                                            <tr>
-                                                <th>YHOO <span class="co-name">Yahoo! Inc.</span></th>
-                                                <td>15.81</td>
-                                                <td>12:25PM</td>
-                                                <td>0.11 (0.67%)</td>
-                                                <td>15.70</td>
-                                                <td>15.94</td>
-                                                <td>15.79 x 6100</td>
-                                            </tr>
+                                                
+                                                
+                                                <td><?php echo $i+=1;?></td>
+                                                
+                                                <td><?php echo $row['fechaCierre'];?></td>
+                                                
+                                                <td><?php echo $row['folioVenta'];?></td>
+                                                
+                                                <td>
+                                                <?php
+                                                $qci = $conn->prepare("
+                                                Select paciente From clientesInternos WHERE entidad = :entidad and folioVenta = :folioVenta");
+
+                                                $qci->execute(array(":entidad" => $entidad, ":folioVenta" => $row['folioVenta']));
+
+                                                for ($ic = 0; $ic = $qci->fetch(); $ic++) {
+                                                    echo $ic['paciente'];
+                                                }
+                                                ?>
+                                                </td>
+                                                
+                                                <td><?php echo $row['seguro'];?></td>
+                                                
+                                                
+                                                <td   align="left" >
+                                                        <?php
+                                                        if ($row['naturaleza'] == 'C') {
+                                                            echo 'Normal';
+                                                        } elseif ($row['naturaleza'] == 'A') {
+                                                            echo 'Devolucion';
+                                                        }
+                                                        ?>	   
+
+                                                    </td>
+                                                    
+                                                <td align="left" >
+                                                        <?php
+                                                        echo $row['statusCuenta'];
+                                                        ?>	   
+
+                                                    </td>                                                    
+                                                    
+                                                <td align="left" >
+                                                        <?php
+                                                        if ($row['tipoPaciente'] == 'externo') {
+                                                            echo 'R' . $row1a['numRecibo'];
+                                                        } else {
+                                                            echo 'M' . $row['keyCAP'];
+                                                        }
+                                                        ?>	   
+
+                                                    </td>
+                                                    
+                                                    
+                                                <td align="right" >
+                                                        <?php
+                                                        if ($row['naturaleza'] == 'C') {
+                                                            $imp[0]+=($row['precioVenta'] * $row['cantidad']) + ($row['iva'] * $row['cantidad']);
+
+                                                            echo '$' . number_format($row['precioVenta'] * $row['cantidad'], 2);
+                                                        } elseif ($row['naturaleza'] == 'A') {
+                                                            echo '<div class="error">$' . number_format($row['precioVenta'] * $row['cantidad'], 2) . '</div>';
+                                                            $devs[0]+=($row['precioVenta'] * $row['cantidad']) + ($row['iva'] * $row['cantidad']);
+                                                        }
+                                                        ?>	   
+
+                                                    </td>
+                                                    
+                                                    
+                                            </tr> 
+                                            <?php } ?>
+                                            
                                         </tbody>
                                     </table>
                                 
@@ -452,41 +323,27 @@
                                     
                                 
                             </div>
+                            <?php } ?>
+                            
                         
                         </div>
                     </div>
                 </div>
                 
-                <?php require_once("../layouts/footer.php"); ?>
+              
             </div>
 	</div>
             
+            
+              <?php require_once("../layouts/footer.php"); ?>
             <!-- Page Loading Overlay -->
 	<div class="page-loading-overlay">
 		<div class="loader-2"></div>
 	</div>
-	
-   <script>
-		new Autocomplete("nomMedico", function() { 
-			this.setValue = function( id ) {
-				document.getElementsByName("medico")[0].value = id;
-			}
-			
-			// If the user modified the text but doesn't select any new item, then clean the hidden value.
-			if ( this.isModified )
-				this.setValue("");
-			
-			// return ; will abort current request, mainly used for validation.
-			// For example: require at least 1 char if this request is not fired by search icon click
-			if ( this.value.length < 1 && this.isNotClick ) 
-				return ;
-			
-			// Replace .html to .php to get dynamic results.
-			// .html is just a sample for you
-			return "../cargos/medicosCedulax.php?entidad=<?php echo $entidad;?>&q=" + this.value;
-			// return "completeEmpName.php?q=" + this.value;
-		});	
-	</script>
+        </div>
+            
+
+
     
     
     <?php require_once("../layouts/bottom.php"); ?>

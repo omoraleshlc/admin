@@ -28,4 +28,8 @@
     } else {
         echo "something is not right :s";
     }
+    
+    
+    ##EXPORTANDO VARIABLES
+    $entidad=$_SESSION['entidad'];
 ?>

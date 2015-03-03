@@ -149,16 +149,17 @@
             this.applyClass = 'btn-success';
             this.cancelClass = 'btn-default';
 
-            this.format = 'MM/DD/YYYY';
+            //this.format = 'MM/DD/YYYY';
+            this.format = 'YYYY-MM-DD';
             this.separator = ' - ';
 
             this.locale = {
-                applyLabel: 'Apply',
-                cancelLabel: 'Cancel',
-                fromLabel: 'From',
-                toLabel: 'To',
+                applyLabel: 'Aplicar',
+                cancelLabel: 'Cancelar',
+                fromLabel: 'Desde',
+                toLabel: 'Hasta',
                 weekLabel: 'W',
-                customRangeLabel: 'Custom Range',
+                customRangeLabel: 'Personalizar rango',
                 daysOfWeek: moment.weekdaysMin(),
                 monthNames: moment.monthsShort(),
                 firstDay: moment.localeData()._week.dow
