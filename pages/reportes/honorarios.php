@@ -57,7 +57,7 @@
 
                                         <div class="col-sm-2">
 
-                                            <input type="text" id="field-1" name="fechas" value="" class="form-control daterange" />
+                                            <input type="text" id="field-1" name="fechas" value="" class="form-control daterange" format-date="YYYY-MM-DD" />
 
                                         </div>
                                         
@@ -144,8 +144,7 @@ $query = $conn->prepare("
                                 fecha1 = :fechaFinal
                                 and
                                 tipoPaciente='externo' 
-                                order by folioVenta,fechaCargo,fechaCierre ASC" );
- 
+                                order by folioVenta,fechaCargo,fechaCierre ASC" ); 
  $query->execute(array(":entidad" => $entidad,":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
    
       /*for($i=0; $row = $query->fetch(); $i++){

@@ -552,6 +552,152 @@
                     }
                 </script>
 
+                
+                
+                
+                
+                <h1>Ingresos del día</h1>    
+
+                
+<div class="row">
+                    <div class="col-sm-3">
+
+
+<?php #mostrar en tiempo real los ingresos 
+$hoy=date("Y-m-d");
+$query = $conn->prepare("
+Select usuario,fecha1 From cargosCuentaPaciente where entidad='".$_SESSION['entidad']."' 
+and
+gpoProducto=''
+and
+fechaCargo='".$hoy."'
+    and
+    naturaleza!='-'
+    and
+    numRecibo>0
+   and tipoTransaccion!=''
+   and
+   precioVenta>0
+   group by usuario
+order by numRecibo ASC 
+"); 
+ $query->execute(array(":entidad" => $_SESSION['entidad'],":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
+ ?>
+                        
+                        <?php for($i=0; $row = $query->fetch(); $i++){ ?>
+                        <?php
+                            $qa = $conn->prepare("
+                        SELECT sum((precioVenta*cantidad)+(iva*cantidad)) as ab
+                        FROM
+                        cargosCuentaPaciente
+                        WHERE
+                        entidad = :entidad and usuario = :usuario 
+                        and               
+                        tipoTransaccion!='' and tipoTransaccion!='0'
+                        and 
+                        naturaleza='A' ");
+
+                        $qa->execute(array(":entidad" => $_SESSION['entidad'], ":usuario" => $row['usuario']));
+
+                        for ($ia = 0; $ia = $qa->fetch(); $ia++) {
+                            $p[0]+= $ia['ab'];
+                        }
+
+
+                        $qc = $conn->prepare("
+                        SELECT sum((precioVenta*cantidad)+(iva*cantidad)) as abd
+                        FROM
+                        cargosCuentaPaciente
+                        WHERE
+                        entidad = :entidad and usuario = :usuario 
+                        and               
+                        tipoTransaccion!='' and tipoTransaccion!='0'
+                        and 
+                        naturaleza='C' ");
+
+                        $qc->execute(array(":entidad" => $_SESSION['entidad'], ":usuario" => $row['usuario']));
+
+                        for ($ic = 0; $ic = $qc->fetch(); $ic++) {
+                            $d[0]+= $ic['abd'];
+                        }  
+                        
+                        ?>
+                        <div class="xe-widget xe-counter xe-counter-purple" data-count=".num" data-from="1" data-to="<?php echo $p[0]-$d[0];?>" data-suffix="Pesos" data-duration="3" data-easing="false">
+                            <div class="xe-icon">
+                                <i class="linecons-user"></i>
+                            </div>
+                            <div class="xe-label">
+                    <?php                               
+                       
+                    
+                    //echo '$'.number_format($p[0]-$d[0],2);
+?>
+                                
+                                
+                               <strong class="num">0.0%</strong>
+                                <span><?php echo 'Cajero: '.$row['usuario'] ?></span>
+                            </div>
+                        </div>
+                    <?php
+                    $p[0]=null;
+                    $d[0]=null;                        
+                    } ?>
+   
+
+                    </div>
+    
+    
+    
+    
+    
+    
+<div class="col-sm-3">
+<?php
+$query=null;
+$ic=null;
+$p[0]=null;$d[0]=null;
+
+$query = $conn->prepare("
+Select usuario,fecha1 From cargosCuentaPaciente where entidad='".$_SESSION['entidad']."' 
+and
+gpoProducto=''
+and
+fechaCargo='".$hoy."'
+    and
+    naturaleza!='-'
+    and
+    numRecibo>0
+   and tipoTransaccion!=''
+   and
+   precioVenta>0
+   group by usuario
+order by numRecibo ASC 
+"); 
+ $query->execute(array(":entidad" => $_SESSION['entidad'],":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
+?>
+        
+                        <?php for($i=0; $row = $query->fetch(); $i++){ ?>
+                        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="99.9" data-suffix="%" data-duration="2">
+                            <div class="xe-icon">
+                                <i class="linecons-cloud"></i>
+                            </div>
+                            <div class="xe-label">
+                                <strong class="num">0.0%</strong>
+                                <span>Server uptime</span>
+                            </div>
+                        </div>
+                        <?php } ?>    
+                        
+
+                    </div>
+</div>
+                
+                
+                
+                
+                
+                
+                <!--
                 <div class="row">
                     <div class="col-sm-3">
 
@@ -682,6 +828,7 @@
 
                     </div>
                 </div>
+                -->
 
                 <?php require_once("../layouts/footer.php"); ?>
             </div>
