@@ -2,14 +2,14 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<?php require_once("../layouts/head.php"); ?>
-</head>
+    <head>
+        <?php require_once("../layouts/head.php"); ?>
+    </head>
 
-<body class="page-body">
+    <body class="page-body">
 
-	<div class="page-container">
-            
+        <div class="page-container">
+
             <?php require_once("../layouts/sidebar.php"); ?>
 
             <div class="main-content">
@@ -22,7 +22,7 @@
                         <p class="description">Some description</p>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-sm-12">
 
@@ -43,18 +43,18 @@
                     </div>
                 </div>
 
-                
-                
+
+
                 <?php require_once("../layouts/footer.php"); ?>
             </div>
-	</div>
-            
-            <!-- Page Loading Overlay -->
-	<div class="page-loading-overlay">
-		<div class="loader-2"></div>
-	</div>
-        
-    <?php require_once("../layouts/bottom.php"); ?>
+        </div>
 
-</body>
+        <!-- Page Loading Overlay -->
+        <div class="page-loading-overlay">
+            <div class="loader-2"></div>
+        </div>
+
+        <?php require_once("../layouts/bottom.php"); ?>
+
+    </body>
 </html>
