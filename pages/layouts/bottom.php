@@ -1,3 +1,9 @@
+<!-- Imported styles -->
+<link rel="stylesheet" href="../../resources/xenon-theme/js/daterangepicker/daterangepicker-bs3.css">
+<link rel="stylesheet" href="../../resources/xenon-theme/js/select2/select2.css">
+<link rel="stylesheet" href="../../resources/xenon-theme/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="../../resources/xenon-theme/js/multiselect/css/multi-select.css">
+
 
 <!-- Bottom Scripts -->
 <script src="../../resources/xenon-theme/js/bootstrap.min.js"></script>
@@ -11,13 +17,6 @@
 
 <!-- JavaScripts initializations and stuff -->
 <script src="../../resources/xenon-theme/js/xenon-custom.js"></script>
-
-
-<!-- Imported styles -->
-<link href="../../resources/xenon-theme/js/daterangepicker/daterangepicker-bs3.css">
-<link href="../../resources/xenon-theme/js/select2/select2.css">
-<link href="../../resources/xenon-theme/js/select2/select2-bootstrap.css">
-<link href="../../resources/xenon-theme/js/multiselect/css/multi-select.css">
 
 
 <!-- Imported scripts -->
