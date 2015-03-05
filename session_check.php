@@ -8,7 +8,7 @@
         exit();
         
     } else {//Set time out session life
-        $inactive = 600; // set timeout period in seconds
+        $inactive = 6000; // set timeout period in seconds
 
         if (isset($_SESSION['timeout'])) {// check to see if $_SESSION['timeout'] is set
             $session_life = time() - $_SESSION['timeout'];

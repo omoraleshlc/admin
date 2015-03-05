@@ -60,7 +60,7 @@ require("../../classes/medicos.php");
                                         <form role="form" method="post">
                                             <div class="form-group">
                                                 <label for="rangoFechas">Escoje el rango de fechas</label>
-                                                <input type="text" id="rangoFechas" name="fechas" value="" class="form-control daterange" format-date="YYYY-MM-DD" />
+                                                <input type="text" id="rangoFechas" name="fechas" value="<?php echo isset($_POST['fechas'])?$_POST['fechas']:""; ?>" class="form-control daterange" format-date="YYYY-MM-DD" />
                                             </div>
                                             
                                             <div class="form-group">
@@ -101,17 +101,17 @@ require("../../classes/medicos.php");
 
 
                                         global $conn;
-                                        $medico = 'HLCJVR';
+                                        //$medico = 'HLCJVR';
                                         $query = $conn->prepare("
                                             select * 
                                             from cargosCuentaPaciente 
                                             where entidad = :entidad and 
                                             medico = :medico and 
-                                            fecha1 = :fechaInicial and 
-                                            fecha1 = :fechaFinal
+                                            (fechaCierre >= :fechaInicial and 
+                                            fechaCierre<= :fechaFinal)
                                             and
                                             tipoPaciente = 'externo' 
-                                            order by folioVenta,fechaCargo,fechaCierre ASC");
+                                            order by folioVenta, fechaCargo, fechaCierre ASC");
                                         $query->execute(array(":entidad" => $entidad, ":medico" => $medico, ":fechaInicial" => $fechaInicial, ":fechaFinal" => $fechaFinal));
                                     ?>
 
@@ -165,7 +165,7 @@ require("../../classes/medicos.php");
                                                         <td>
                                                             <?php
                                                                 if ($row['tipoPaciente'] == 'externo') {
-                                                                    echo 'R' . $row1a['numRecibo'];
+                                                                    echo 'R' . $row['numRecibo'];
                                                                 } else {
                                                                     echo 'M' . $row['keyCAP'];
                                                                 }
@@ -195,14 +195,17 @@ require("../../classes/medicos.php");
                                     				from cargosCuentaPaciente 
                                     				where entidad = :entidad and 
                                                                     medico = :medico and 
-                                                                    fecha1 = :fechaInicial and 
-                                                                    fecha1 = :fechaFinal and
+                                                                    (fechaCargo>= :fechaInicial and 
+                                                                    fechaCargo<= :fechaFinal) and
                                                                     (tipoPaciente='interno' or tipoPaciente='urgencias')  
-                                                                    order by folioVenta,fechaCargo ASC ");
+                                                                    order by folioVenta, fechaCargo ASC ");
                                         $query1->execute(array(":entidad" => $entidad, ":medico" => $medico, ":fechaInicial" => $fechaInicial, ":fechaFinal" => $fechaFinal));
                                     ?>
 
-                                    
+                                    <br>
+                                    <hr>
+                                    <br>
+
                                     <h4>Pacientes Internos</h4>
                                     
                                     <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">    
@@ -403,10 +406,10 @@ require("../../classes/medicos.php");
             </div>
         </div>
 
-        <!-- Page Loading Overlay -->
+        <!-- Page Loading Overlay 
         <div class="page-loading-overlay">
             <div class="loader-2"></div>
-        </div>
+        </div>-->
 
         <?php require_once("../layouts/bottom.php"); ?>
     </body>
