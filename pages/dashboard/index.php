@@ -559,14 +559,17 @@
                 <h1>Ingresos del día</h1>    
 
                 
+                
+<div class="panel panel-default">                
 <div class="row">
-                    <div class="col-sm-3">
+             
 
 
 <?php #mostrar en tiempo real los ingresos 
 $hoy=date("Y-m-d");
+$hoy='2015-02-05';
 $query = $conn->prepare("
-Select usuario,fecha1 From cargosCuentaPaciente where entidad='".$_SESSION['entidad']."' 
+Select * From cargosCuentaPaciente where entidad='".$_SESSION['entidad']."' 
 and
 gpoProducto=''
 and
@@ -578,119 +581,745 @@ fechaCargo='".$hoy."'
    and tipoTransaccion!=''
    and
    precioVenta>0
-   group by usuario
+
 order by numRecibo ASC 
 "); 
- $query->execute(array(":entidad" => $_SESSION['entidad'],":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
+ $query->execute(array(":entidad" => $_SESSION['entidad'],":fechaCargo" => $hoy));
  ?>
                         
-                        <?php for($i=0; $row = $query->fetch(); $i++){ ?>
+                        <?php for($i=0; $myrow = $query->fetch(); $i++){ ?>
                         <?php
-                            $qa = $conn->prepare("
+                        /*    $qa = $conn->prepare("
                         SELECT sum((precioVenta*cantidad)+(iva*cantidad)) as ab
                         FROM
                         cargosCuentaPaciente
                         WHERE
-                        entidad = :entidad and usuario = :usuario 
+                        entidad = :entidad and fechaCargo = :fechaCargo 
                         and               
                         tipoTransaccion!='' and tipoTransaccion!='0'
-                        and 
-                        naturaleza='A' ");
+                        and
+                        naturaleza<>'-'
+                         ");
 
-                        $qa->execute(array(":entidad" => $_SESSION['entidad'], ":usuario" => $row['usuario']));
+                        $qa->execute(array(":entidad" => $_SESSION['entidad'] ":fechaCargo" => $hoy));*/
 
-                        for ($ia = 0; $ia = $qa->fetch(); $ia++) {
-                            $p[0]+= $ia['ab'];
+                       
+                        switch ($myrow['tipoPago']) {
+
+   case "Efectivo" :
+	 $efectivo[0]+=$myrow['cantidadParticular']*$myrow['cantidad'];
+   break;
+
+   case "Tarjeta de Credito" :
+ 	$tarjetaCredito[0]+=$myrow['cantidadParticular']*$myrow['cantidad'];
+   break;
+
+   case "Transferencia Electronica" :
+   
+ 	$transferencia[0]+=$myrow['cantidadParticular']*$myrow['cantidad'];
+   break;
+
+   case "Cheque" :
+ 	$cheque[0]+=$myrow['cantidadParticular']*$myrow['cantidad'];
+   break;
+   
+   case "Nomina" :
+   $nomina[0]+=$myrow['cantidadParticular']*$myrow['cantidad'];
+   break;
+
+   case "Cuentas por Cobrar" :
+ 	$cxc[0]+=$myrow['cantidadAseguradora']*$myrow['cantidad'];
+   break;
+
+   case "Otros" :
+ 	$otros[0]+=$myrow['cantidadParticular']*$myrow['cantidad'];
+   break;
+                    
                         }
 
 
-                        $qc = $conn->prepare("
-                        SELECT sum((precioVenta*cantidad)+(iva*cantidad)) as abd
-                        FROM
-                        cargosCuentaPaciente
-                        WHERE
-                        entidad = :entidad and usuario = :usuario 
-                        and               
-                        tipoTransaccion!='' and tipoTransaccion!='0'
-                        and 
-                        naturaleza='C' ");
 
-                        $qc->execute(array(":entidad" => $_SESSION['entidad'], ":usuario" => $row['usuario']));
-
-                        for ($ic = 0; $ic = $qc->fetch(); $ic++) {
-                            $d[0]+= $ic['abd'];
-                        }  
-                        
-                        ?>
-                        <div class="xe-widget xe-counter xe-counter-purple" data-count=".num" data-from="1" data-to="<?php echo $p[0]-$d[0];?>" data-suffix="Pesos" data-duration="3" data-easing="false">
-                            <div class="xe-icon">
-                                <i class="linecons-user"></i>
-                            </div>
-                            <div class="xe-label">
-                    <?php                               
+$total=$efectivo[0] +
+        $tarjetaCredito[0]+
+        $transferencia[0]+
+        $cheque[0]+
+        $nomina[0]+
+        $cxc[0]+
+        $otros[0];
                        
-                    
-                    //echo '$'.number_format($p[0]-$d[0],2);
-?>
-                                
-                                
-                               <strong class="num">0.0%</strong>
-                                <span><?php echo 'Cajero: '.$row['usuario'] ?></span>
-                            </div>
-                        </div>
-                    <?php
+
+                        
+
                     $p[0]=null;
                     $d[0]=null;                        
                     } ?>
    
 
-                    </div>
+                    
     
     
     
     
     
     
-<div class="col-sm-3">
-<?php
-$query=null;
-$ic=null;
-$p[0]=null;$d[0]=null;
+                <div class="col-sm-3">
 
-$query = $conn->prepare("
-Select usuario,fecha1 From cargosCuentaPaciente where entidad='".$_SESSION['entidad']."' 
-and
-gpoProducto=''
-and
-fechaCargo='".$hoy."'
-    and
-    naturaleza!='-'
-    and
-    numRecibo>0
-   and tipoTransaccion!=''
-   and
-   precioVenta>0
-   group by usuario
-order by numRecibo ASC 
-"); 
- $query->execute(array(":entidad" => $_SESSION['entidad'],":medico" => $medico,":fechaInicial" => $fechaInicial,":fechaFinal" => $fechaFinal));
-?>
-        
-                        <?php for($i=0; $row = $query->fetch(); $i++){ ?>
-                        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="99.9" data-suffix="%" data-duration="2">
+                        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<?php echo $efectivo[0];?>" data-suffix="$" data-duration="2">
                             <div class="xe-icon">
-                                <i class="linecons-cloud"></i>
+                                <i class="linecons-money"></i>
                             </div>
                             <div class="xe-label">
                                 <strong class="num">0.0%</strong>
-                                <span>Server uptime</span>
+                                <span>Efectivo</span>
                             </div>
                         </div>
-                        <?php } ?>    
+                          
                         
 
-                    </div>
+           
+                        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<?php echo $tarjetaCredito[0];?>" data-suffix="$" data-duration="2">
+                            <div class="xe-icon">
+                                <i class="linecons-cd"></i>
+                            </div>
+                            <div class="xe-label">
+                                <strong class="num">0.0%</strong>
+                                <span>Tarjeta Crédito</span>
+                            </div>
+                        </div>
+                    </div>    
+    
+    </div>
+    
+    
+                
+    
+    
+    
+<div class="row">
+      
+                <div class="col-sm-3">
+                    
+                    
+                        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<?php echo $cxc[0];?>" data-suffix="$" data-duration="2">
+                            <div class="xe-icon">
+                                <i class="linecons-database"></i>
+                            </div>
+                            <div class="xe-label">
+                                <strong class="num">0.0%</strong>
+                                <span>CxC</span>
+                            </div>
+                        </div> 
+                    
+                        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<?php echo $otros[0];?>" data-suffix="$" data-duration="2">
+                            <div class="xe-icon">
+                                <i class="linecons-pencil"></i>
+                            </div>
+                            <div class="xe-label">
+                                <strong class="num">0.0%</strong>
+                                <span>Otros</span>
+                            </div>
+                        </div>                    
+                   
+                </div>    
+    
+    
+    
+    
+                <div class="col-sm-3">
+                        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<?php echo $nomina[0];?>" data-suffix="$" data-duration="2">
+                            <div class="xe-icon">
+                                <i class="linecons-cd"></i>
+                            </div>
+                            <div class="xe-label">
+                                <strong class="num">0.0%</strong>
+                                <span>Nómina</span>
+                            </div>
+                        </div>                    
+                   
+                </div>
 </div>
+            </div>
+
+                
+
+                
+                
+                
+                
+                
+                
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+               
+                
+                
+                
+<div class="panel panel-default">
+				<div class="panel-heading">
+				Pacientes Atendidos
+				</div>
+				<div class="panel-body">
+					
+					
+                                    
+                                    
+                                    
+                                    
+                                    
+<?php       
+$query=null;
+$i=null;
+$query = $conn->prepare("
+Select * From clientesInternos where entidad='".$_SESSION['entidad']."' 
+and
+
+fechaCierre='".$hoy."'
+    and
+    tipoPaciente='externo' group by almacen  
+"); 
+ $query->execute(array(":entidad" => $_SESSION['entidad'],":fechaCierre" => $hoy));
+ ?>
+                        
+                        <?php for($i=0; $myrow = $query->fetch(); $i++){ ?>         
+                                    <?php
+                                    $qs = $conn->prepare("
+                                            SELECT count(*) as pxConsultados 
+                                            FROM
+                                            clientesInternos
+                                            WHERE
+                                            entidad = :entidad and almacen = :almacen 
+                                            and
+                                            fechaCierre = :fechaCierre 
+                                            and
+                                            tipoPaciente='externo' 
+                                            and
+                                            folioVenta<>''
+                                            ");
+
+                                            $qs->execute(array(":entidad" => $_SESSION['entidad'],":almacen" => $myrow['almacen'],":fechaCierre" =>$hoy));
+                                            $rows=$qs->fetch();
+                                            
+                                            $qpv = $conn->prepare("
+                                            SELECT count(*) as pxPrimeraVez 
+                                            FROM
+                                            clientesInternos
+                                            WHERE
+                                            entidad = :entidad and almacen = :almacen 
+                                            and
+                                            fechaCierre = :fechaCierre 
+                                            and
+                                            tipoPaciente='externo' 
+                                            and
+                                            folioVenta<>''
+                                            and
+                                            primeraVez<>''
+                                            ");
+
+                                            $qpv->execute(array(":entidad" => $_SESSION['entidad'],":almacen" => $myrow['almacen'],":fechaCierre" =>$hoy));
+                                            $rowpv=$qpv->fetch();
+                                            
+                                    ?>
+                                    
+                                    <div class="row">
+                                            <script type="text/javascript">
+				
+					jQuery(document).ready(function($)
+					{	
+							
+					if( ! $.isFunction($.fn.dxChart))
+						return;
+						
+					var gaugesPalette = ['#8dc63f', '#40bbea', '#ffba00', '#cc3f44'];
+					
+						
+					// Data Sources for all charts
+					var reqs_per_second_data = [
+						{ time: new Date("December 05, 2014 18:00:00"), reqs: 1183 },
+						{ time: new Date("December 05, 2014 19:00:00"), reqs: 17 },
+						{ time: new Date("December 05, 2014 20:00:00"), reqs: 138 },
+						{ time: new Date("December 05, 2014 21:00:00"), reqs: 199 },
+						{ time: new Date("December 05, 2014 22:00:00"), reqs: 178 },
+						{ time: new Date("December 05, 2014 23:00:00"), reqs: 63 },
+						{ time: new Date("December 06, 2014 00:00:00"), reqs: 47 },
+						{ time: new Date("December 06, 2014 01:00:00"), reqs: 104 },
+						{ time: new Date("December 06, 2014 02:00:00"), reqs: 190 },
+						{ time: new Date("December 06, 2014 03:00:00"), reqs: 85 },
+						{ time: new Date("December 06, 2014 04:00:00"), reqs: 165 },
+						{ time: new Date("December 06, 2014 05:00:00"), reqs: 36 },
+						{ time: new Date("December 06, 2014 06:00:00"), reqs: 191 },
+						{ time: new Date("December 06, 2014 07:00:00"), reqs: 27 },
+						{ time: new Date("December 06, 2014 08:00:00"), reqs: 26 },
+						{ time: new Date("December 06, 2014 09:00:00"), reqs: 15 },
+						{ time: new Date("December 06, 2014 10:00:00"), reqs: 143 },
+						{ time: new Date("December 06, 2014 11:00:00"), reqs: 56 },
+						{ time: new Date("December 06, 2014 12:00:00"), reqs: 184 },
+						{ time: new Date("December 06, 2014 13:00:00"), reqs: 135 },
+						{ time: new Date("December 06, 2014 14:00:00"), reqs: 20 },
+						{ time: new Date("December 06, 2014 15:00:00"), reqs: 175 },
+						{ time: new Date("December 06, 2014 16:00:00"), reqs: 126 },
+						{ time: new Date("December 06, 2014 17:00:00"), reqs: 124 },
+					];
+					
+					var cpu_usage_data = [
+						{ time: new Date("December 05, 2014 18:00:00"), usage: 7 },
+						{ time: new Date("December 05, 2014 19:00:00"), usage: 11 },
+						{ time: new Date("December 05, 2014 20:00:00"), usage: 27 },
+						{ time: new Date("December 05, 2014 21:00:00"), usage: 17 },
+						{ time: new Date("December 05, 2014 22:00:00"), usage: 55 },
+						{ time: new Date("December 05, 2014 23:00:00"), usage: 30 },
+						{ time: new Date("December 06, 2014 00:00:00"), usage: 100 },
+						{ time: new Date("December 06, 2014 01:00:00"), usage: 18 },
+						{ time: new Date("December 06, 2014 02:00:00"), usage: 72 },
+						{ time: new Date("December 06, 2014 03:00:00"), usage: 5 },
+						{ time: new Date("December 06, 2014 04:00:00"), usage: 8 },
+						{ time: new Date("December 06, 2014 05:00:00"), usage: 55 },
+						{ time: new Date("December 06, 2014 06:00:00"), usage: 64 },
+						{ time: new Date("December 06, 2014 07:00:00"), usage: 40 },
+						{ time: new Date("December 06, 2014 08:00:00"), usage: 12 },
+						{ time: new Date("December 06, 2014 09:00:00"), usage: 76 },
+						{ time: new Date("December 06, 2014 10:00:00"), usage: 75 },
+						{ time: new Date("December 06, 2014 11:00:00"), usage: 93 },
+						{ time: new Date("December 06, 2014 12:00:00"), usage: 65 },
+						{ time: new Date("December 06, 2014 13:00:00"), usage: 99 },
+						{ time: new Date("December 06, 2014 14:00:00"), usage: 94 },
+						{ time: new Date("December 06, 2014 15:00:00"), usage: 8 },
+						{ time: new Date("December 06, 2014 16:00:00"), usage: 39 },
+						{ time: new Date("December 06, 2014 17:00:00"), usage: 51 },
+					];
+					
+					var memory_usage_data = [
+						{ time: new Date("December 05, 2014 18:00:00"), used: 888 },
+						{ time: new Date("December 05, 2014 19:00:00"), used: 114 },
+						{ time: new Date("December 05, 2014 20:00:00"), used: 101 },
+						{ time: new Date("December 05, 2014 21:00:00"), used: 138 },
+						{ time: new Date("December 05, 2014 22:00:00"), used: 719 },
+						{ time: new Date("December 05, 2014 23:00:00"), used: 416 },
+						{ time: new Date("December 06, 2014 00:00:00"), used: 373 },
+						{ time: new Date("December 06, 2014 01:00:00"), used: 542 },
+						{ time: new Date("December 06, 2014 02:00:00"), used: 117 },
+						{ time: new Date("December 06, 2014 03:00:00"), used: 315 },
+						{ time: new Date("December 06, 2014 04:00:00"), used: 489 },
+						{ time: new Date("December 06, 2014 05:00:00"), used: 843 },
+						{ time: new Date("December 06, 2014 06:00:00"), used: 425 },
+						{ time: new Date("December 06, 2014 07:00:00"), used: 970 },
+						{ time: new Date("December 06, 2014 08:00:00"), used: 969 },
+						{ time: new Date("December 06, 2014 09:00:00"), used: 747 },
+						{ time: new Date("December 06, 2014 10:00:00"), used: 577 },
+						{ time: new Date("December 06, 2014 11:00:00"), used: 728 },
+						{ time: new Date("December 06, 2014 12:00:00"), used: 499 },
+						{ time: new Date("December 06, 2014 13:00:00"), used: 209 },
+						{ time: new Date("December 06, 2014 14:00:00"), used: 749 },
+						{ time: new Date("December 06, 2014 15:00:00"), used: 626 },
+						{ time: new Date("December 06, 2014 16:00:00"), used: 658 },
+						{ time: new Date("December 06, 2014 17:00:00"), used: 930 },
+					];
+						
+					// Requests per second gauge
+					$('#primeraVez<?php echo $i;?>').dxCircularGauge({
+						scale: {
+							startValue: 0,
+							endValue: 100,
+							majorTick: {
+								tickInterval: 50
+							}
+						},
+						rangeContainer: {
+							palette: 'pastel',
+							width: 3,
+							ranges: [
+								{
+									startValue: 0,
+									endValue: 50,
+									color: gaugesPalette[0]
+								}, {
+									startValue: 50,
+									endValue: 100,
+									color: gaugesPalette[1]
+								}, {
+									startValue: 100,
+									endValue: 150,
+									color: gaugesPalette[2]
+								}, {
+									startValue: 150,
+									endValue: 200,
+									color: gaugesPalette[3]
+								}
+							],
+						},
+						value: <?php echo $rowpv['pxPrimeraVez'];?>,
+						valueIndicator: {
+							offset: 10,
+							color: '#2c2e2f',
+							spindleSize: 12
+						}
+					});
+                                        
+					
+					// Requests per second chart
+					$("#primeraVez-chart<?php echo $i;?>").dxChart({
+						dataSource: reqs_per_second_data,
+						commonPaneSettings: {
+							border: {
+								visible: true,
+								color: '#f5f5f5'
+							}
+						},
+						commonSeriesSettings: {
+							type: "area",
+							argumentField: "time",
+							border: {
+								color: '#68b828',
+								width: 1,
+								visible: true
+							}
+						},
+						series: [
+							{ valueField: "reqs", name: "Reqs per Second", color: '#68b828', opacity: .5 },
+						],
+						commonAxisSettings: {
+							label: {
+								visible: true
+							},
+							grid: {
+								visible: true,
+								color: '#f5f5f5'
+							}
+						},
+						argumentAxis: {
+							valueMarginsEnabled: false,
+							label: {
+								customizeText: function (arg) {
+									return date('h:i A', arg.value);
+								}
+							},
+						},
+						legend: {
+							visible: false
+						}
+					});
+					
+						
+					// CPU Usage
+					$('#cpu-usage').dxCircularGauge({
+						scale: {
+							startValue: 0,
+							endValue: 100,
+							majorTick: {
+								tickInterval: 25
+							}
+						},
+						rangeContainer: {
+							palette: 'pastel',
+							width: 3,
+							ranges: [
+								{
+									startValue: 0,
+									endValue: 25,
+									color: gaugesPalette[0]
+								}, {
+									startValue: 25,
+									endValue: 50,
+									color: gaugesPalette[1]
+								}, {
+									startValue: 50,
+									endValue: 75,
+									color: gaugesPalette[2]
+								}, {
+									startValue: 75,
+									endValue: 100,
+									color: gaugesPalette[3]
+								}
+							],
+						},
+						value: 81,
+						valueIndicator: {
+							offset: 10,
+							color: '#2c2e2f',
+							spindleSize: 12
+						}
+					});
+					
+					// CPU Usage chart
+					$("#cpu-usage-chart").dxChart({
+						dataSource: cpu_usage_data,
+						commonPaneSettings: {
+							border: {
+								visible: true,
+								color: '#f5f5f5'
+							}
+						},
+						commonSeriesSettings: {
+							type: "area",
+							argumentField: "time",
+							border: {
+								color: '#7c38bc',
+								width: 1,
+								visible: true
+							}
+						},
+						series: [
+							{ valueField: "usage", name: "Capacity used", color: '#7c38bc', opacity: .5 },
+						],
+						commonAxisSettings: {
+							label: {
+								visible: true
+							},
+							grid: {
+								visible: true,
+								color: '#f5f5f5'
+							}
+						},
+						argumentAxis: {
+							valueMarginsEnabled: false,
+							label: {
+								customizeText: function (arg) {
+									return date('h:i A', arg.value);
+								}
+							},
+						},
+						legend: {
+							visible: false
+						}
+					});
+					
+					
+						
+					// Memory Usage
+					$('#memory-usage').dxCircularGauge({
+						scale: {
+							startValue: 0,
+							endValue: 1000,
+							majorTick: {
+								tickInterval: 250
+							}
+						},
+						rangeContainer: {
+							palette: 'pastel',
+							width: 3,
+							ranges: [
+								{
+									startValue: 0,
+									endValue: 250,
+									color: '#40bbea'
+								}, {
+									startValue: 250,
+									endValue: 500,
+									color: '#40bbea'
+								}, {
+									startValue: 500,
+									endValue: 750,
+									color: '#40bbea'
+								}, {
+									startValue: 750,
+									endValue: 1000,
+									color: '#40bbea'
+								}
+							],
+						},
+						value: 574,
+						valueIndicator: {
+							offset: 10,
+							color: '#2c2e2f',
+							spindleSize: 12
+						}
+					});
+					
+					// Memory Usage chart
+					$("#memory-usage-chart").dxChart({
+						dataSource: memory_usage_data,
+						commonPaneSettings: {
+							border: {
+								visible: true,
+								color: '#f5f5f5'
+							}
+						},
+						commonSeriesSettings: {
+							type: "area",
+							argumentField: "time",
+							border: {
+								color: '#40bbea',
+								width: 1,
+								visible: true
+							}
+						},
+						series: [
+							{ valueField: "used", name: "Megabytes occupied", color: '#40bbea', opacity: .5 },
+						],
+						commonAxisSettings: {
+							label: {
+								visible: true
+							},
+							grid: {
+								visible: true,
+								color: '#f5f5f5'
+							}
+						},
+						argumentAxis: {
+							valueMarginsEnabled: false,
+							label: {
+								customizeText: function (arg) {
+									return date('h:i A', arg.value);
+								}
+							},
+						},
+						legend: {
+							visible: false
+						}
+					});
+					
+					
+					// Combine charts for filtering, grouped by time
+					var all_data_sources = [];
+					
+					$.map(reqs_per_second_data, function(arg, i)
+					{
+						all_data_sources.push({
+							time: 					arg.time,
+							requestsPerMinute: 		reqs_per_second_data[i].reqs,
+							cpuUsage: 				cpu_usage_data[i].usage,
+							memoryUsed: 			memory_usage_data[i].used
+						});
+					});
+					
+					
+					// Range Filter
+					$("#range-chart").dxRangeSelector({
+						dataSource: all_data_sources,
+						size: {
+							height: 140
+						},
+						chart: {
+							series: [
+								{ argumentField: "time", valueField: "requestsPerMinute", color: '#68b828', opacity: .65 },
+								{ argumentField: "time", valueField: "cpuUsage", color: '#7c38bc', opacity: .65 },
+								{ argumentField: "time", valueField: "memoryUsed", color: '#40bbea', opacity: .65 }
+							]
+						},
+						selectedRange: {
+							startValue: all_data_sources[4].time,
+							endValue: all_data_sources[14].time
+						},
+						selectedRangeChanged: function(e)
+						{
+							var filter = {
+								reqsPerMinuteData: [],
+								cpuUsageData: [],
+								memoryUsageData: []
+							};
+							
+							$.map(all_data_sources, function(arg, i)
+							{
+								if(date("U", e.startValue) <= date("U", arg.time) && date("U", e.endValue) >= date("U", arg.time))
+								{
+									filter.reqsPerMinuteData.push({
+										time: arg.time,
+										reqs: arg.requestsPerMinute
+									});
+									
+									filter.cpuUsageData.push({
+										time: arg.time,
+										usage: arg.cpuUsage
+									});
+									
+									filter.memoryUsageData.push({
+										time: arg.time,
+										used: arg.memoryUsed
+									});
+								}
+							});
+							
+							$('#primeraVez-chart<?php echo $i;?>').dxChart('instance').option('dataSource', filter.reqsPerMinuteData);
+							$('#cpu-usage-chart').dxChart('instance').option('dataSource', filter.cpuUsageData);
+							$('#memory-usage-chart').dxChart('instance').option('dataSource', filter.memoryUsageData);
+						}
+					});
+					
+					
+					
+					// Resize charts
+					$(window).on('xenon.resize', function()
+					{
+						$("#range-chart").data("dxRangeSelector").render();
+						
+						$("#primeraVez-chart<?php echo $i;?>").data("dxChart").render();
+						$("#cpu-usage-chart").data("dxChart").render();
+						$("#memory-usage-chart").data("dxChart").render();
+						
+						$("#primeraVez<?php echo $i;?>").data("dxCircularGauge").render();
+						$("#cpu-usage").data("dxCircularGauge").render();
+						$("#memory-usage").data("dxCircularGauge").render();
+					});
+				});
+			</script> 
+						<div class="col-sm-3">
+						<p class="text-medium">
+                                            <?php                                                 
+                                            $qa = $conn->prepare("
+                                            SELECT descripcion 
+                                            FROM
+                                            almacenes
+                                            WHERE
+                                            entidad = :entidad and almacen = :almacen 
+                                            
+                                            ");
+
+                                            $qa->execute(array(":entidad" => $_SESSION['entidad'],":almacen" => $myrow['almacen']));
+                                            $row=$qa->fetch();
+                                            echo $row['descripcion'];?>
+                                                        </p>
+                                                        
+			<div class="super-large text-secondary"  data-count="this" data-from="0" data-to="<?php echo $rows['pxConsultados'];?>" data-duration="1.5">0</div>
+						</div>
+                        
+                        
+                                                <?php if($rowpv['pxPrimeraVez']>0){?>
+						<div class="col-sm-3" align="center">
+						Primera Vez  <?php echo $rowpv['pxPrimeraVez'];?>
+                                                <div id="primeraVez<?php echo $i;?>" style="height: 150px;"></div>
+                                                
+						</div>
+                                                <?php }?>
+						<!--<div class="col-sm-6">
+							<div id="primeraVez-chart" style="height: 150px;"></div>
+						</div>-->
+                                                
+					</div>
+                        <?php } #cierra for ?>
+                                    
+                                   
+                                    
+					
+				</div>
+    
+    
+    
+    
+    
+			</div>
+                
+                
+                
+                
+                
+
+                
+                
+                
+                
                 
                 
                 
