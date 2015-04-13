@@ -16,6 +16,8 @@
 
                 <?php require_once("../layouts/navbar.php"); ?>
 
+                
+                <!--
                 <div class="dx-warning hidden">
                     <div>
                         <h2>How to Include Charts Library in Xenon Theme</h2>
@@ -31,6 +33,7 @@
                         </ol>
                     </div>
                 </div>
+                -->
 
                 <script type="text/javascript">
                     jQuery(document).ready(function ($)
@@ -555,8 +558,11 @@
                 
                 
                 
-                
-                <h1>Ingresos del día</h1>    
+<?php
+$hoy=date("Y-m-d");
+$hoy='2015-04-08';
+?>
+                <h1>Ingresos del día <?php echo $hoy;?></h1>    
 
                 
                 
@@ -566,8 +572,7 @@
 
 
 <?php #mostrar en tiempo real los ingresos 
-$hoy=date("Y-m-d");
-$hoy='2015-02-05';
+
 $query = $conn->prepare("
 Select * From cargosCuentaPaciente where entidad='".$_SESSION['entidad']."' 
 and
@@ -768,74 +773,174 @@ $total=$efectivo[0] +
                 
                 
                 
-<div class="panel panel-default">
-				<div class="panel-heading">
-				Pacientes Atendidos
-				</div>
-				<div class="panel-body">
-					
-					
-                                    
-                                    
-                                    
-                                    
-                                    
-<?php       
-$query=null;
-$i=null;
-$query = $conn->prepare("
-Select * From clientesInternos where entidad='".$_SESSION['entidad']."' 
-and
 
-fechaCierre='".$hoy."'
-    and
-    tipoPaciente='externo' group by almacen  
-"); 
- $query->execute(array(":entidad" => $_SESSION['entidad'],":fechaCierre" => $hoy));
- ?>
-                        
-                        <?php for($i=0; $myrow = $query->fetch(); $i++){ ?>         
-                                    <?php
-                                    $qs = $conn->prepare("
-                                            SELECT count(*) as pxConsultados 
-                                            FROM
-                                            clientesInternos
-                                            WHERE
-                                            entidad = :entidad and almacen = :almacen 
-                                            and
-                                            fechaCierre = :fechaCierre 
-                                            and
-                                            tipoPaciente='externo' 
-                                            and
-                                            folioVenta<>''
-                                            ");
+                
+                
+                
+                
+                
 
-                                            $qs->execute(array(":entidad" => $_SESSION['entidad'],":almacen" => $myrow['almacen'],":fechaCierre" =>$hoy));
-                                            $rows=$qs->fetch();
-                                            
-                                            $qpv = $conn->prepare("
-                                            SELECT count(*) as pxPrimeraVez 
-                                            FROM
-                                            clientesInternos
-                                            WHERE
-                                            entidad = :entidad and almacen = :almacen 
-                                            and
-                                            fechaCierre = :fechaCierre 
-                                            and
-                                            tipoPaciente='externo' 
-                                            and
-                                            folioVenta<>''
-                                            and
-                                            primeraVez<>''
-                                            ");
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <!--
+                <div class="row">
+                    <div class="col-sm-3">
 
-                                            $qpv->execute(array(":entidad" => $_SESSION['entidad'],":almacen" => $myrow['almacen'],":fechaCierre" =>$hoy));
-                                            $rowpv=$qpv->fetch();
-                                            
-                                    ?>
-                                    
-                                    <div class="row">
-                                            <script type="text/javascript">
+                        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="99.9" data-suffix="%" data-duration="2">
+                            <div class="xe-icon">
+                                <i class="linecons-cloud"></i>
+                            </div>
+                            <div class="xe-label">
+                                <strong class="num">0.0%</strong>
+                                <span>Server uptime</span>
+                            </div>
+                        </div>
+
+                        <div class="xe-widget xe-counter xe-counter-purple" data-count=".num" data-from="1" data-to="117" data-suffix="k" data-duration="3" data-easing="false">
+                            <div class="xe-icon">
+                                <i class="linecons-user"></i>
+                            </div>
+                            <div class="xe-label">
+                                <strong class="num">1k</strong>
+                                <span>Users Total</span>
+                            </div>
+                        </div>
+
+                        <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1000" data-to="2470" data-duration="4" data-easing="true">
+                            <div class="xe-icon">
+                                <i class="linecons-camera"></i>
+                            </div>
+                            <div class="xe-label">
+                                <strong class="num">1000</strong>
+                                <span>New Daily Photos</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+
+                        <div class="chart-item-bg">
+                            <div class="chart-label">
+                                <div class="h3 text-secondary text-bold"  data-count="this" data-from="0.00" data-to="14.85" data-suffix="%" data-duration="1">0.00%</div>
+                                <span class="text-medium text-muted">More visitors</span>
+                            </div>
+                            <div id="pageviews-visitors-chart" style="height: 298px;"></div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-3">
+
+                        <div class="chart-item-bg">
+                            <div class="chart-label chart-label-small">
+                                <div class="h4 text-purple text-bold"  data-count="this" data-from="0.00" data-to="95.8" data-suffix="%" data-duration="1.5">0.00%</div>
+                                <span class="text-small text-upper text-muted">Current Server Uptime</span>
+                            </div>
+                            <div id="server-uptime-chart" style="height: 134px;"></div>
+                        </div>
+
+                        <div class="chart-item-bg">
+                            <div class="chart-label chart-label-small">
+                                <div class="h4 text-secondary text-bold"  data-count="this" data-from="0.00" data-to="320.45" data-decimal="," data-duration="2">0</div>
+                                <span class="text-small text-upper text-muted">Avg. of Sales</span>
+                            </div>
+                            <div id="sales-avg-chart" style="height: 134px; position: relative;">
+                                <div style="position: absolute; top: 25px; right: 0; left: 40%; bottom: 0"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <div class="chart-item-bg">
+                            <div id="pageviews-stats" style="height: 320px; padding: 20px 0;"></div>
+
+                            <div class="chart-entry-view">
+                                <div class="chart-entry-label">
+                                    Pageviews
+                                </div>
+                                <div class="chart-entry-value">
+                                    <div class="sparkline first-month"></div>
+                                </div>
+                            </div>
+
+                            <div class="chart-entry-view">
+                                <div class="chart-entry-label">
+                                    Visitors
+                                </div>
+                                <div class="chart-entry-value">
+                                    <div class="sparkline second-month"></div>
+                                </div>
+                            </div>
+
+                            <div class="chart-entry-view">
+                                <div class="chart-entry-label">
+                                    Converted Sales
+                                </div>
+                                <div class="chart-entry-value">
+                                    <div class="sparkline third-month"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+
+                        <div class="chart-item-bg">
+                            <div class="chart-label">
+                                <div id="network-mbs-packets" class="h1 text-purple text-bold"  data-count="this" data-from="0.00" data-to="21.05" data-suffix="mb/s" data-duration="1">0.00mb/s</div>
+                                <span class="text-small text-muted text-upper">Download Speed</span>
+                            </div>
+                            <div class="chart-right-legend">
+                                <div id="network-realtime-gauge" style="width: 170px; height: 140px"></div>
+                            </div>
+                            <div id="realtime-network-stats" style="height: 320px"></div>
+                        </div>
+
+                        <div class="chart-item-bg">
+                            <div class="chart-label">
+                                <div id="network-mbs-packets" class="h1 text-secondary text-bold"  data-count="this" data-from="0.00" data-to="67.35" data-suffix="%" data-duration="1.5">0.00%</div>
+                                <span class="text-small text-muted text-upper">CPU Usage</span>
+
+                                <p class="text-medium" style="width: 50%; margin-top: 10px">Sentiments two occasional affronting solicitude travelling and one contrasted. Fortune day out married parties.</p>
+                            </div>
+                            <div id="other-stats" style="min-height: 183px">
+                                <div id="cpu-usage-gauge" style="width: 170px; height: 140px; position: absolute; right: 20px; top: 20px"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                -->
+
+                
+                
+                
+                
+                
+<?php /*
+$query1 = $conn->prepare( "Select hora1 From cargosCuentaPaciente where entidad=:entidad and fechaCargo=:hoy and tipoTransaccion<>'' group by hora1");
+$query1->execute(array(":entidad" => $_SESSION['entidad'],":hoy" => $hoy));
+
+while($fetchY = $query1->fetch()){?>
+    { time: <?php echo $fetchY['hora1'];?>, reqs: 500 },
+<?php } */
+?>                    
+                
+                
+                
+                
+<script type="text/javascript">
 				
 					jQuery(document).ready(function($)
 					{	
@@ -848,7 +953,10 @@ fechaCierre='".$hoy."'
 						
 					// Data Sources for all charts
 					var reqs_per_second_data = [
-						{ time: new Date("December 05, 2014 18:00:00"), reqs: 1183 },
+                                            
+  
+						{ time: new Date("December 05, 2014 18:00:00"), reqs: 83 },
+                                                
 						{ time: new Date("December 05, 2014 19:00:00"), reqs: 17 },
 						{ time: new Date("December 05, 2014 20:00:00"), reqs: 138 },
 						{ time: new Date("December 05, 2014 21:00:00"), reqs: 199 },
@@ -929,10 +1037,10 @@ fechaCierre='".$hoy."'
 					];
 						
 					// Requests per second gauge
-					$('#primeraVez<?php echo $i;?>').dxCircularGauge({
+					$('#reqs-per-second').dxCircularGauge({
 						scale: {
 							startValue: 0,
-							endValue: 100,
+							endValue: 200,
 							majorTick: {
 								tickInterval: 50
 							}
@@ -960,17 +1068,16 @@ fechaCierre='".$hoy."'
 								}
 							],
 						},
-						value: <?php echo $rowpv['pxPrimeraVez'];?>,
+						value: 46,
 						valueIndicator: {
 							offset: 10,
 							color: '#2c2e2f',
 							spindleSize: 12
 						}
 					});
-                                        
 					
 					// Requests per second chart
-					$("#primeraVez-chart<?php echo $i;?>").dxChart({
+					$("#reqs-per-second-chart").dxChart({
 						dataSource: reqs_per_second_data,
 						commonPaneSettings: {
 							border: {
@@ -1242,7 +1349,7 @@ fechaCierre='".$hoy."'
 								}
 							});
 							
-							$('#primeraVez-chart<?php echo $i;?>').dxChart('instance').option('dataSource', filter.reqsPerMinuteData);
+							$('#reqs-per-second-chart').dxChart('instance').option('dataSource', filter.reqsPerMinuteData);
 							$('#cpu-usage-chart').dxChart('instance').option('dataSource', filter.cpuUsageData);
 							$('#memory-usage-chart').dxChart('instance').option('dataSource', filter.memoryUsageData);
 						}
@@ -1255,210 +1362,130 @@ fechaCierre='".$hoy."'
 					{
 						$("#range-chart").data("dxRangeSelector").render();
 						
-						$("#primeraVez-chart<?php echo $i;?>").data("dxChart").render();
+						$("#reqs-per-second-chart").data("dxChart").render();
 						$("#cpu-usage-chart").data("dxChart").render();
 						$("#memory-usage-chart").data("dxChart").render();
 						
-						$("#primeraVez<?php echo $i;?>").data("dxCircularGauge").render();
+						$("#reqs-per-second").data("dxCircularGauge").render();
 						$("#cpu-usage").data("dxCircularGauge").render();
 						$("#memory-usage").data("dxCircularGauge").render();
 					});
 				});
-			</script> 
-						<div class="col-sm-3">
-						<p class="text-medium">
-                                            <?php                                                 
-                                            $qa = $conn->prepare("
-                                            SELECT descripcion 
-                                            FROM
-                                            almacenes
-                                            WHERE
-                                            entidad = :entidad and almacen = :almacen 
-                                            
-                                            ");
-
-                                            $qa->execute(array(":entidad" => $_SESSION['entidad'],":almacen" => $myrow['almacen']));
-                                            $row=$qa->fetch();
-                                            echo $row['descripcion'];?>
-                                                        </p>
-                                                        
-			<div class="super-large text-secondary"  data-count="this" data-from="0" data-to="<?php echo $rows['pxConsultados'];?>" data-duration="1.5">0</div>
+			</script>                
+                
+                
+                
+                
+<div class="panel panel-default">
+				<div class="panel-heading">
+					Ingresos x Hora
+				</div>
+				<div class="panel-body">
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="range-chart"></div>
 						</div>
-                        
-                        
-                                                <?php if($rowpv['pxPrimeraVez']>0){?>
-						<div class="col-sm-3" align="center">
-						Primera Vez  <?php echo $rowpv['pxPrimeraVez'];?>
-                                                <div id="primeraVez<?php echo $i;?>" style="height: 150px;"></div>
-                                                
-						</div>
-                                                <?php }?>
-						<!--<div class="col-sm-6">
-							<div id="primeraVez-chart" style="height: 150px;"></div>
-						</div>-->
-                                                
 					</div>
-                        <?php } #cierra for ?>
-                                    
-                                   
-                                    
 					
 				</div>
-    
-    
-    
-    
-    
+			</div>                
+                
+                
+                
+                
+                        
+                        
+                        
+
+                        
+<div class="panel panel-default">
+				<div class="panel-heading">
+					Ventas Efectivo
+				</div>
+				<div class="panel-body">
+					
+					<div class="row">
+						
+                                            <div class="col-sm-3">
+							<p class="text-medium">
+                                                            View the number of requests completed at the moment and for the selected range within the last day.
+                                                        </p>
+                                                        
+							<div class="super-large text-secondary"  data-count="this" data-from="0" data-to="46" data-duration="1.5">
+                                                            0
+                                                        </div>
+                                                        
+						</div>
+                                            
+                                            
+                                            
+						<div class="col-sm-3">
+							<div id="reqs-per-second" style="height: 150px;"></div>
+						</div>
+						<div class="col-sm-6">
+							<div id="reqs-per-second-chart" style="height: 150px;"></div>
+						</div>
+					</div>
+					
+				</div>
 			</div>
+                        
+                        
+			
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Ventas Tarjeta de Credito
+				</div>
+				<div class="panel-body">
+					
+					<div class="row">
+						<div class="col-sm-3">
+							<p class="text-medium">View how much CPU is being used at the moment and for the selected range within the last day.</p>
+							<div class="super-large text-purple"  data-count="this" data-from="0" data-to="81" data-duration="2">0</div>
+						</div>
+						<div class="col-sm-3">
+							<div id="cpu-usage" style="height: 150px;"></div>
+						</div>
+						<div class="col-sm-6">
+							<div id="cpu-usage-chart" style="height: 150px;"></div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+                        
+                        
+                        
+                        
+			
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Ventas CxC
+				</div>
+				<div class="panel-body">
+					
+					<div class="row">
+						<div class="col-sm-3">
+							<p class="text-medium">View how much memory is used at the moment and for the selected range within the last day.</p>
+							<div class="super-large text-info"  data-count="this" data-from="0" data-to="574" data-duration="3">0</div>
+						</div>
+						<div class="col-sm-3">
+							<div id="memory-usage" style="height: 150px;"></div>
+						</div>
+						<div class="col-sm-6">
+							<div id="memory-usage-chart" style="height: 150px;"></div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+                        
+                        
+                        
                 
                 
                 
-                
-                
-
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                <!--
-                <div class="row">
-                    <div class="col-sm-3">
-
-                        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="99.9" data-suffix="%" data-duration="2">
-                            <div class="xe-icon">
-                                <i class="linecons-cloud"></i>
-                            </div>
-                            <div class="xe-label">
-                                <strong class="num">0.0%</strong>
-                                <span>Server uptime</span>
-                            </div>
-                        </div>
-
-                        <div class="xe-widget xe-counter xe-counter-purple" data-count=".num" data-from="1" data-to="117" data-suffix="k" data-duration="3" data-easing="false">
-                            <div class="xe-icon">
-                                <i class="linecons-user"></i>
-                            </div>
-                            <div class="xe-label">
-                                <strong class="num">1k</strong>
-                                <span>Users Total</span>
-                            </div>
-                        </div>
-
-                        <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1000" data-to="2470" data-duration="4" data-easing="true">
-                            <div class="xe-icon">
-                                <i class="linecons-camera"></i>
-                            </div>
-                            <div class="xe-label">
-                                <strong class="num">1000</strong>
-                                <span>New Daily Photos</span>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-sm-6">
-
-                        <div class="chart-item-bg">
-                            <div class="chart-label">
-                                <div class="h3 text-secondary text-bold"  data-count="this" data-from="0.00" data-to="14.85" data-suffix="%" data-duration="1">0.00%</div>
-                                <span class="text-medium text-muted">More visitors</span>
-                            </div>
-                            <div id="pageviews-visitors-chart" style="height: 298px;"></div>
-                        </div>
-
-                    </div>
-                    <div class="col-sm-3">
-
-                        <div class="chart-item-bg">
-                            <div class="chart-label chart-label-small">
-                                <div class="h4 text-purple text-bold"  data-count="this" data-from="0.00" data-to="95.8" data-suffix="%" data-duration="1.5">0.00%</div>
-                                <span class="text-small text-upper text-muted">Current Server Uptime</span>
-                            </div>
-                            <div id="server-uptime-chart" style="height: 134px;"></div>
-                        </div>
-
-                        <div class="chart-item-bg">
-                            <div class="chart-label chart-label-small">
-                                <div class="h4 text-secondary text-bold"  data-count="this" data-from="0.00" data-to="320.45" data-decimal="," data-duration="2">0</div>
-                                <span class="text-small text-upper text-muted">Avg. of Sales</span>
-                            </div>
-                            <div id="sales-avg-chart" style="height: 134px; position: relative;">
-                                <div style="position: absolute; top: 25px; right: 0; left: 40%; bottom: 0"></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6">
-
-                        <div class="chart-item-bg">
-                            <div id="pageviews-stats" style="height: 320px; padding: 20px 0;"></div>
-
-                            <div class="chart-entry-view">
-                                <div class="chart-entry-label">
-                                    Pageviews
-                                </div>
-                                <div class="chart-entry-value">
-                                    <div class="sparkline first-month"></div>
-                                </div>
-                            </div>
-
-                            <div class="chart-entry-view">
-                                <div class="chart-entry-label">
-                                    Visitors
-                                </div>
-                                <div class="chart-entry-value">
-                                    <div class="sparkline second-month"></div>
-                                </div>
-                            </div>
-
-                            <div class="chart-entry-view">
-                                <div class="chart-entry-label">
-                                    Converted Sales
-                                </div>
-                                <div class="chart-entry-value">
-                                    <div class="sparkline third-month"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-sm-6">
-
-                        <div class="chart-item-bg">
-                            <div class="chart-label">
-                                <div id="network-mbs-packets" class="h1 text-purple text-bold"  data-count="this" data-from="0.00" data-to="21.05" data-suffix="mb/s" data-duration="1">0.00mb/s</div>
-                                <span class="text-small text-muted text-upper">Download Speed</span>
-                            </div>
-                            <div class="chart-right-legend">
-                                <div id="network-realtime-gauge" style="width: 170px; height: 140px"></div>
-                            </div>
-                            <div id="realtime-network-stats" style="height: 320px"></div>
-                        </div>
-
-                        <div class="chart-item-bg">
-                            <div class="chart-label">
-                                <div id="network-mbs-packets" class="h1 text-secondary text-bold"  data-count="this" data-from="0.00" data-to="67.35" data-suffix="%" data-duration="1.5">0.00%</div>
-                                <span class="text-small text-muted text-upper">CPU Usage</span>
-
-                                <p class="text-medium" style="width: 50%; margin-top: 10px">Sentiments two occasional affronting solicitude travelling and one contrasted. Fortune day out married parties.</p>
-                            </div>
-                            <div id="other-stats" style="min-height: 183px">
-                                <div id="cpu-usage-gauge" style="width: 170px; height: 140px; position: absolute; right: 20px; top: 20px"></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                -->
-
                 <?php require_once("../layouts/footer.php"); ?>
             </div>
         </div>

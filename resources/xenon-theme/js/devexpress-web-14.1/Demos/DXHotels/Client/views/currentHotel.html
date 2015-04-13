@@ -1,0 +1,186 @@
+﻿<div data-options="dxView : { name: 'currentHotel', title: 'Hotel' } ">
+    <div data-options="dxContent : { targetPlaceholder: 'content' } ">        
+            <div class="external-hotel">
+                <div class="data-hotel content">
+                    <div class="date-info">
+                        <p class="date" data-bind="text:date"></p>
+                        <p class="adults" data-bind="text: adultsCurrent "></p>
+                        <div class="change-search" data-bind="dxButton:{text:'Change Search', clickAction : showSearch }, css: { 'change-search-active': visibleSearch }"></div>
+                    </div>
+                    <div class="hotel-info">
+                        <h4 class="hotel-name" data-bind="text:hotelName "></h4>
+                        <div class="rating-container">
+                            <div class="rating-stars" data-bind="style: { width: 20 * customerRating() + '%' }"></div>
+                        </div>
+                        <div class="external-address">
+                            <p class="address" data-bind="text: fullAddress "></p>
+                        </div>
+                    </div>
+                    <div class="internal-search" data-bind="dxPopup: { visible: visibleSearch, width:380, height: 290, closeOnOutsideClick: true, dragEnabled: false, showTitle: false, shading: false, position: {at: 'top', offset :'275 316', of: '.page'}}">
+                        <div class="hotel-search">
+                            <div class="selectbox-search">
+                                <div class="field-label">Location</div>
+                                <div class="selectbox" data-bind="dxSelectBox: { dataSource: selectBoxData, displayExpr:'City', valueExpr: 'ID', placeholder:'', value: cityId }, dxValidator: { name: 'Location', validationRules: [{ type: 'required' }]}">
+                                </div>
+                            </div>
+                            <div class="check-date">
+                                <div class="field-label">
+                                    <div class="label-out">Check out</div>
+                                    <div class="label-in">Check in</div>
+                                </div>
+                                <div class="check-in" data-bind="dxDateBox: { value: minDate, format:'date', min: minDateCheckIn, width: 160, height:30 }, dxValidator: { name: 'Check in', validationRules: [{ type: 'required' }] }"></div>
+                                <div class="check-out" data-bind="dxDateBox: { value: maxDate, format:'date', min: minDateCheckOut, max: maxDateCheckOut, width: 160, height:30 }, dxValidator: { name: 'Check out', validationRules: [{ type: 'required' }]}"></div>
+                            </div>
+                            <div class="field-label">
+                                <div class="label-rooms">Rooms</div>
+                                <div class="label-adults">Adults</div>
+                                <div class="label-children">Children</div>
+                            </div>
+                            <div class="rooms">
+                                <div class="adults">
+                                    <div class="chldren-selectbox" data-bind="dxSelectBox: { dataSource: numberOfChildren, placeholder: '', value: children, width:70}"></div>
+                                    <div class="adult-selectbox" data-bind="dxSelectBox: { dataSource: numberOfAdults, placeholder: '', value: adults},dxValidator: { name: 'Adults', validationRules: [{ type: 'required' }]}"></div>
+                                </div>
+                                <div class="room-selectbox" data-bind="dxSelectBox: { dataSource: numberOfRooms, placeholder: '', value: rooms}, dxValidator: { name: 'Rooms', validationRules: [{ type: 'required' }]}"></div>
+                            </div>
+                            <div class="error-message">
+                                <div data-bind="dxValidationSummary: { height:20 }"></div>
+                            </div>
+                            <div class="button-search">
+                                <div class="search" data-bind="dxButton:{text:'Apply',  clickAction : searchClick}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="external-gallery-guest">
+                <div class="gallery-guest">
+                    <div class="gallery-hotel">
+                        <div class="gallery-container-hotel" data-bind="dxGallery: { selectedIndex: currentImageHotel , dataSource: hotelGallery().images, noDataText: 'Loading...', height:387, width: 620, showIndicator: false }">
+                            <div data-options="dxTemplate: { name: 'item' }">
+                                <img data-bind="attr: { src: src }" />
+                            </div>
+                        </div>
+                        <div class="mini-gallery-hotel" data-bind="foreach:hotelGallery().images">
+                            <div class="external-padding">
+                                <div data-bind=" css: { 'current-img': index == $parent.currentImageHotel() }">
+                                    <div data-bind=" css: { 'white-pading': index == $parent.currentImageHotel() }">
+                                    </div>
+                                </div>
+                                <img class="small-image-hotel" data-bind="attr: { src: src }, click: $parent.selectedIndexHotel">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="guests">
+                        <div class="caption">
+                            <span>What our guests say...</span>
+                        </div>
+                        <div class="reviews" data-bind="foreach: reviews">
+                            <div class="review">
+                                <p class="text" data-bind="text: review"></p>
+                                <p class="posted-on" data-bind="text:postedOn "></p>
+                                <div class="rating-container">
+                                    <div class="rating-stars" data-bind="style:{width: 20 * rating + '%'}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="description content">
+                <div class="caption">Description</div>
+                <div class="text" data-bind="text:description"></div>
+            </div>
+            <div class="hotel-features content">
+                <div class="feature">
+                    <div class="caption">Features</div>
+                    <div class="features" data-bind="foreach:features">
+                        <div data-bind="text:feature"></div>
+                    </div>
+                </div>
+                <div class="room">
+                    <div class="caption">Rooms</div>
+                    <div class="features">
+                        <div>Climate control    </div>
+                        <div>Air conditioning</div>
+                        <div>Coffee/tea maker</div>
+                        <div>Iron/ironing</div>
+                    </div>
+                </div>
+                <div class="location">
+                    <div class="caption">Location</div>
+                    <div class="features">
+                        <div>Airport shuttle (available 24 hours)</div>
+                        <div> Cruise terminal shuttle</div>
+                    </div>
+                </div>
+            </div>
+        <div class="accordion-hotels" data-bind="dxAccordion:{ items: roomDesc,itemTemplate:'text', selectedIndex: selectedAccItem,noDataText: 'Loading...', onItemTitleClick: resetScroll }">
+            <div class="list-item-custom content" data-options="dxTemplate : { name: 'title' }">
+                <div class="short-description">
+                    <div class="accordion-state"></div>
+                    <div class="price">
+                        <div class="book-it" data-bind="dxButton: { text:'Book it', clickAction: $root.booking }"></div>
+                        <div class="lowest-price" data-bind="text: $data.title.nightlyRate"></div>
+                    </div>
+                    <div class="lowest-price-text">
+                        LOWEST PRICE
+                    </div>
+                    <p class="description-room" data-bind="text: $data.title.shortDescription"></p>
+                </div>
+            </div>
+            <div class="list-item-custom content fullContent" data-options="dxTemplate : { name: 'text' } ">
+                <div class="full-description">
+                    <div class="text">
+                        <span data-bind="text:$data.text.roomType"></span>
+                        <span data-bind="text:$data.text.shortDescription"></span>
+                    </div>
+                    <div class="container-room">
+                        <div class="scroll scroll-button-left" data-bind="click: $root.resetScroll,  css: { 'scroll-left-no-active': !$root.scrollRight() } "></div>
+                        <div class="external-room-gallery">
+                            <div class="room-gallery" data-bind="foreach: $data.text.roomGalleries, css: { 'scroll-right': $root.scrollRight }">
+                                <div class="padding-img">
+                                    <img class="small-image" data-bind="attr: { src: src }, click: $root.openRoomGallery">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scroll scroll-button-right" data-bind="click:$root.galleryRight,  css: {'scroll-right-no-active' : $root.scrollRight() }"></div>
+                    </div>
+                    <div class="features">
+                        <div class="features-part-1" data-bind="foreach: $data.text.featuresPart1">
+                            <div class="feature">
+                                <img class="icon" data-bind="attr: {src:icon}" />
+                                <div data-bind="text: feature"></div>
+                            </div>
+                        </div>
+                        <div class="features-part-2" data-bind="foreach: $data.text.featuresPart2">
+                            <div class="feature">
+                                <img class="icon" data-bind="attr: {src:icon}" />
+                                <div data-bind="text: feature"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="popup-room" data-bind="dxPopup: { visible: popupRoomVisible, width:600, height:520, closeOnOutsideClick: true, dragEnabled:false, showTitle:false}">
+                <div class="gallery-container-room" data-bind="dxGallery: { selectedIndex: currentImageRoom, dataSource: roomGallery, contentReadyAction: roomGalleryReadyAction, height: 400, width: 570, showIndicator: false }">
+                    <div data-options="dxTemplate: { name: 'item' }">
+                        <img data-bind="attr: { src: src }" />
+                    </div>
+                </div>
+                <div class="external-minigallary-room">
+                    <div class="mini-gallery-room" data-bind="foreach: roomGallery">
+                        <div class="external-padding-room">
+                            <div data-bind="  css: { 'current-img-room': index === $parent.currentImageRoom()}">
+                                <div data-bind="  css: { 'white-pading-room': index === $parent.currentImageRoom()}">
+                                </div>
+                            </div>
+                            <img class="small-image-room" data-bind=" attr: { src: src }, click: $parent.selectedIndexRoom">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>		
+		<title>Discrete scale</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link href="../../../../../styles.css" rel="stylesheet" />
+
+
+		<!-- Theme -->
+		<link href="../../../../../css/dx.common.css" rel="stylesheet" />
+	    <link rel="dx-theme" data-theme="generic.dark" href="../../../../../css/dx.dark.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="generic.light" href="../../../../../css/dx.light.css" data-active="true" />
+	    <link rel="dx-theme" data-theme="android.holo-dark" href="../../../../../css/dx.android.holo-dark.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="android.holo-light" href="../../../../../css/dx.android.holo-light.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="win8.black" href="../../../../../css/dx.win8.black.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="win8.white" href="../../../../../css/dx.win8.white.css" data-active="false" />
+		<link rel="dx-theme" data-theme="ios" href="../../../../../css/dx.ios.default.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="ios7" href="../../../../../css/dx.ios7.default.css" data-active="false" />
+		<link rel="dx-theme" data-theme="tizen.black" href="../../../../../css/dx.tizen.black.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="tizen.white" href="../../../../../css/dx.tizen.white.css" data-active="false" />
+
+		<script src="../../../../../js/jquery-1.11.2.min.js"></script>
+		<script src="../../../../../js/knockout-3.2.0.js"></script>
+		<script src="../../../../../js/globalize.min.js"></script>
+		<script src="../../../../../js/dx.chartjs.js"></script><script src="../../../../../js/dx.webappjs.js"></script>
+		<script src="../../../../../js/underscore-1.5.1.min.js"></script>
+		<script src="../../../../../js.js"></script>
+                                      
+	</head>
+	<body>
+		
+		<script id="jsCode">
+			$(function ()  
+				{
+   ;
+var dataSource = [
+    { country: "Chile", copper: 5700000, },
+    { country: "United States", copper: 1220000 },
+    { country: "Peru", copper: 1300000 },
+    { country: "China", copper: 1650000 },
+    { country: "Australia", copper: 990000 },
+    { country: "Russia", copper: 930000, },
+    { country: "DR Congo", copper: 900000 },
+    { country: "Finland", copper: 119000 }
+]; 
+
+var rangeOptions = {
+    margin: {
+        top: 50,
+        bottom: 50
+    },
+    size: {
+        height: 200
+    },   
+    dataSource: dataSource,
+    chart: {
+        commonSeriesSettings: {            
+            argumentField: "country",
+            type: "bar"       
+        },
+        series: [
+            { valueField: "copper", name: "Copper" }
+        ]      
+    },
+    onSelectedRangeChanged: function (e) {
+        var data = e.component.option("dataSource"),
+            total = 0,
+            startIndex,
+            endIndex;
+
+        $.each(data, function(i, item){
+            if (item.country == e.startValue )
+                startIndex = i;
+            else if (item.country == e.endValue)
+                endIndex = i;           
+        });
+
+        if(endIndex) {
+            data
+                .slice(startIndex, endIndex + 1)
+                .forEach(function(item){
+                    total += item.copper;
+                });
+        }
+        else {
+            total = data[startIndex].copper;
+        }  
+                            
+        $("#total").text(total);
+    }
+}
+
+$("#range").dxRangeSelector(rangeOptions);
+
+$("#total").text("16254000");
+}
+
+			);
+		</script>
+		
+		<div class="header">
+			<div class="content">
+                <div id="onlinedemo" class="button"></div>
+				<div class = "logo">
+					<a class="logo" title="WidgetsJS Gallery" href="../../../../../index.html"></a>
+				</div>
+			</div>
+		</div>
+		<div class="line"></div>		
+		<div class="title ">
+			<h1>Range Selector</h1>&nbsp;&nbsp;&nbsp;<h2>Discrete scale</h2>
+		</div>
+		<div class="content containerPlaceholder">
+			<div class="tab dark-theme">
+				<div class="text">Dark Theme</div>
+			</div>
+			<div class="tab light-theme active">
+				<div class="text">Light Theme</div>
+             </div> 
+			<div class="pane dx-theme-desktop">
+				<div class="long-title"><h3>Copper Production in 2013</h3></div>
+					<div id="full">			
+					<div id="container" style="height: 440px; width: 100%; text-align: center;">
+    <div id="range"></div>
+    <h2>Total: <span id="total"></span> tons</h2>
+</div>					
+					</div>
+					<div class="credits"></div>
+
+			</div>
+		</div>
+		
+		<script id="html" type="html/template">
+		<div id="container" style="height: 440px; width: 100%; text-align: center;">
+    <div id="range"></div>
+    <h2>Total: <span id="total"></span> tons</h2>
+</div>
+		</script>
+        <script>
+            $("#onlinedemo.button").dxButton({
+                text: "Online Demo Gallery",
+                onClick: function () { document.location.href = "http://js.devexpress.com/Demos/WidgetsGallery/" }
+            });
+        </script>
+	</body>
+</html>

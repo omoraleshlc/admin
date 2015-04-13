@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>		
+		<title>List Editing and API</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link href="../../../../../styles.css" rel="stylesheet" />
+
+
+		<!-- Theme -->
+		<link href="../../../../../css/dx.common.css" rel="stylesheet" />
+	    <link rel="dx-theme" data-theme="generic.dark" href="../../../../../css/dx.dark.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="generic.light" href="../../../../../css/dx.light.css" data-active="true" />
+	    <link rel="dx-theme" data-theme="android.holo-dark" href="../../../../../css/dx.android.holo-dark.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="android.holo-light" href="../../../../../css/dx.android.holo-light.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="win8.black" href="../../../../../css/dx.win8.black.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="win8.white" href="../../../../../css/dx.win8.white.css" data-active="false" />
+		<link rel="dx-theme" data-theme="ios" href="../../../../../css/dx.ios.default.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="ios7" href="../../../../../css/dx.ios7.default.css" data-active="false" />
+		<link rel="dx-theme" data-theme="tizen.black" href="../../../../../css/dx.tizen.black.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="tizen.white" href="../../../../../css/dx.tizen.white.css" data-active="false" />
+
+		<script src="../../../../../js/jquery-1.11.2.min.js"></script>
+		<script src="../../../../../js/knockout-3.2.0.js"></script>
+		<script src="../../../../../js/globalize.min.js"></script>
+		<script src="../../../../../js/dx.chartjs.js"></script><script src="../../../../../js/dx.webappjs.js"></script>
+		<script src="../../../../../js/underscore-1.5.1.min.js"></script>
+		<script src="../../../../../js.js"></script>
+                                      
+	</head>
+	<body>
+		<style>.options > div {
+	width: 40%;
+	display: inline-block;
+	margin-bottom: 15px;
+	vertical-align: middle;
+	height: 36px;
+}
+
+.options > div > div:first-child {
+	float: left;
+	margin: 1px 20px 1px 0;
+	line-height: 36px;
+}
+
+.options > div > div.dx-checkbox {
+	margin-top: 7px;
+}
+
+#deleteType {
+	float: left; 
+}
+
+#selectedItems {
+	margin-top: 15px;
+}
+</style>
+		<script id="jsCode">
+			$(function ()  
+				{
+   var tasks = ["Prepare 2013 Financial","Prepare 3013 Marketing Plan","Update Personnel Files","Review Health Insurance Options Under the Affordable Care Act","Choose between PPO and HMO Health Plan",
+	"Google AdWords Strategy","New Brochures","2013 Brochure Designs","Brochure Design Review","Website Re-Design Plan","Rollout of New Website and Marketing Brochures",
+	"Update Sales Strategy Documents","Create 2012 Sales Report","Direct vs Online Sales Comparison Report","Review 2012 Sales Report and Approve 2013 Plans","Deliver R&D Plans for 2013",
+	"Create 2013 R&D Plans","2013 QA Strategy Report","2013 Training Events","Approve Hiring of John Jeffers","Non-Compete Agreements","Update NDA Agreement","Update Employee Files with New NDA","Sign Updated NDA",
+	"Submit Questions Regarding New NDA","Submit Signed NDA","Update Revenue Projections","Review Revenue Projections","Comment on Revenue Projections","Provide New Health Insurance Docs",
+	"Review Changes to Health Insurance Coverage","Scan Health Insurance Forms","Sign Health Insurance Forms","Follow up with West Coast Stores","Follow up with East Coast Stores",
+	"Send Email to Customers about Recall","Submit Refund Report for 2013 Recall","Give Final Approval for Refunds","Prepare Product Recall Report","Review Product Recall Report by Engineering Team",
+	"Create Training Course for New TVs","Review Training Course for any Ommissions","Review Overtime Report","Submit Overtime Request Forms","Overtime Approval Guidelines","Refund Request Template",
+	"Recall Rebate Form","Create Report on Customer Feedback","Review Customer Feedback Report","Customer Feedback Report Analysis","Prepare Shipping Cost Analysis Report","Provide Feedback on Shippers",
+	"Select Preferred Shipper","Complete Shipper Selection Form","Upgrade Server Hardware","Upgrade Personal Computers","Approve Personal Computer Upgrade Plan","Decide on Mobile Devices to Use in the Field",
+	"Upgrade Apps to Windows RT or stay with WinForms","Estimate Time Required to Touch-Enable Apps","Report on Tranistion to Touch-Based Apps","Try New Touch-Enabled WinForms Apps",
+	"Rollout New Touch-Enabled WinForms Apps","Site Up-Time Report","Review Site Up-Time Report","Review Online Sales Report","Determine New Online Marketing Strategy","New Online Marketing Strategy",
+	"Approve New Online Marketing Strategy","Submit New Website Design","Create Icons for Website","Review PSDs for New Website","Create New Shopping Cart","Create New Product Pages","Review New Product Pages",
+	"Approve Website Launch","Launch New Website","Update Customer Shipping Profiles","Create New Shipping Return Labels","Get Design for Shipping Return Labels","PSD needed for Shipping Return Labels",
+	"Request Bandwidth Increase from ISP","Submit D&B Number to ISP for Credit Approval","Contact ISP and Discuss Payment Options","Prepare Year-End Support Summary Report","Analyze Support Traffic for 2013",
+	"Review New Training Material","Distribute Training Material to Support Staff","Training Material Distribution Schedule","Provide New Artwork to Support Team","Publish New Art on the Server",
+	"Replace Old Artwork with New Artwork","Ship New Brochures to Field","Ship Brochures to Todd Hoffman","Update Server with Service Packs","Install New Database","Approve Overtime for HR",
+	"Review New HDMI Specification","Approval on Converting to New HDMI Specification","Create New Spike for Automation Server","Report on Retail Sales Strategy for 2014","Code Review - New Automation Server",
+	"Feedback on New Training Course","Send Monthly Invoices from Shippers","Schedule Meeting with Sales Team","Confirm Availability for Sales Meeting","Reschedule Sales Team Meeting","Send 2 Remotes for Giveaways",
+	"Ship 2 Remotes Priority to Clark Morgan","Discuss Product Giveaways with Management","Follow Up Email with Recent Online Purchasers","Replace Desktops on the 3rd Floor","Update Database with New Leads",
+	"Mail New Leads for Follow Up","Send Territory Sales Breakdown","Territory Sales Breakdown Report","Return Merchandise Report","Report on the State of Engineering Dept","Staff Productivity Report",
+	"Review HR Budget Company Wide","Sales Dept Budget Request Report","Support Dept Budget Report","IT Dept Budget Request Report","Engineering Dept Budget Request Report","1Q Travel Spend Report",
+	"Approve Benefits Upgrade Package","Final Budget Review","State of Operations Report","Online Sales Report","Reprint All Shipping Labels","Shipping Label Artwork","Specs for New Shipping Label",
+	"Move Packaging Materials to New Warehouse","Move Inventory to New Warehouse","Take Forklift to Service Center","Approve Rental of Forklift","Give Final Approval to Rent Forklift","Approve Overtime Pay",
+	"Approve Vacation Request","Approve Salary Increase Request","Review Complaint Reports","Review Website Complaint Reports","Test New Automation App","Fix Synchronization Issues","Free Up Space for New Application Set",
+	"Install New Router in Dev Room","Update Your Profile on Website","Schedule Conf Call with SuperMart","Support Team Evaluation Report","Create New Installer for Company Wide App Deployment",
+	"Pickup Packages from the Warehouse","Sumit Travel Expenses for Recent Trip","Make Travel Arrangements for Sales Trip to San Francisco","Book Flights to San Fran for Sales Trip",
+	"Collect Customer Reviews for Website","Submit New W4 for Updated Exemptions","Get New Frequent Flier Account","Review New Customer Follow Up Plan","Submit Customer Follow Up Plan Feedback",
+	"Review Issue Report and Provide Workarounds","Contact Customers for Video Interviews","Resubmit Request for Expense Reimbursement","Approve Vacation Request Form","Email Test Report on New Products",
+	"Send Receipts for all Flights Last Month"];;
+var selectedItems = [];
+var listWidget = $("#simpleList").dxList({
+	dataSource: tasks,
+	editEnabled: true,
+	height: 400,
+	editConfig: {
+		deleteEnabled: false,
+		deleteType: 'toggle',
+        selectionEnabled: true,
+        selectionType: 'item'
+	},
+    onSelectionChanged: function(data) {
+        selectedItems = $.map(selectedItems, function(item) {
+            if (data.removedItems.indexOf(item) == -1)
+                return item;
+        });
+        selectedItems = selectedItems.concat(data.addedItems);
+        $("#selectedItems > span").text(selectedItems.join(', '));
+    }
+}).dxList("instance");
+
+$("#allowEditing").dxCheckBox({
+    value: false,
+    onValueChanged: function(data) {
+        listWidget.option("editConfig.deleteEnabled", data.value);
+      	deleteTypeChooser.option("disabled", !data.value);
+    }
+});
+
+var deleteTypeChooser = $("#deleteType").dxSelectBox({
+  disabled: true,
+    dataSource: [ 'static', 'toggle', 'slideButton', 'slideItem', 'swipe' ],
+    value: "toggle",
+    onValueChanged: function (data) {
+		listWidget.option("editConfig.deleteType", data.value);
+    }
+}).dxSelectBox("instance");
+}
+
+			);
+		</script>
+		
+		<div class="header">
+			<div class="content">
+                <div id="onlinedemo" class="button"></div>
+				<div class = "logo">
+					<a class="logo" title="WidgetsJS Gallery" href="../../../../../index.html"></a>
+				</div>
+			</div>
+		</div>
+		<div class="line"></div>		
+		<div class="title ">
+			<h1>List</h1>&nbsp;&nbsp;&nbsp;<h2>List Editing and API</h2>
+		</div>
+		<div class="content containerPlaceholder">
+			<div class="tab dark-theme">
+				<div class="text">Dark Theme</div>
+			</div>
+			<div class="tab light-theme active">
+				<div class="text">Light Theme</div>
+             </div> 
+			<div class="pane dx-theme-desktop">
+				<div class="long-title"><h3></h3></div>
+					<div id="full">			
+					<div class="options">
+	<div>
+		<div>Allow deleting:</div>	
+		<div id="allowEditing"></div>				
+	</div>
+	<div>
+		<div>Deleting type:</div>
+		<div id="deleteType"></div>
+	</div>	
+</div>
+<div id="simpleList"></div>
+<div id="selectedItems">Selected Tasks:
+	<span></span>
+</div>					
+					</div>
+					<div class="credits"></div>
+
+			</div>
+		</div>
+		
+		<script id="html" type="html/template">
+		<div class="options">
+	<div>
+		<div>Allow deleting:</div>	
+		<div id="allowEditing"></div>				
+	</div>
+	<div>
+		<div>Deleting type:</div>
+		<div id="deleteType"></div>
+	</div>	
+</div>
+<div id="simpleList"></div>
+<div id="selectedItems">Selected Tasks:
+	<span></span>
+</div>
+		</script>
+        <script>
+            $("#onlinedemo.button").dxButton({
+                text: "Online Demo Gallery",
+                onClick: function () { document.location.href = "http://js.devexpress.com/Demos/WidgetsGallery/" }
+            });
+        </script>
+	</body>
+</html>

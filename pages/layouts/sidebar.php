@@ -53,6 +53,10 @@
                 </ul>
             </div>
         </section>
+        
+        
+        
+        
 
         <ul id="main-menu" class="main-menu">
             <!-- add class "multiple-expanded" to allow multiple submenus to open -->
@@ -60,7 +64,7 @@
             <li>
                 <a href="../dashboard">
                     <i class="linecons-cog"></i>
-                    <span class="title">Dashboard</span>
+                    <span class="title">Inicio</span>
                 </a>
             </li>
             <li>
@@ -69,6 +73,13 @@
                     <span class="title">Reportes</span>
                 </a>
                 <ul>
+                    <li>
+                        <a href="../dashboard/carteraVencida.php">
+                            <span class="title">Antiguedad de Saldos</span>
+                        </a>
+                    </li>
+                    
+                    
                     <li>
                         <a href="dashboard-1.html">
                             <span class="title">Ventas</span>

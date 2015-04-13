@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>		
+		<title>Multiple Point Selection</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link href="../../../../../styles.css" rel="stylesheet" />
+
+
+		<!-- Theme -->
+		<link href="../../../../../css/dx.common.css" rel="stylesheet" />
+	    <link rel="dx-theme" data-theme="generic.dark" href="../../../../../css/dx.dark.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="generic.light" href="../../../../../css/dx.light.css" data-active="true" />
+	    <link rel="dx-theme" data-theme="android.holo-dark" href="../../../../../css/dx.android.holo-dark.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="android.holo-light" href="../../../../../css/dx.android.holo-light.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="win8.black" href="../../../../../css/dx.win8.black.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="win8.white" href="../../../../../css/dx.win8.white.css" data-active="false" />
+		<link rel="dx-theme" data-theme="ios" href="../../../../../css/dx.ios.default.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="ios7" href="../../../../../css/dx.ios7.default.css" data-active="false" />
+		<link rel="dx-theme" data-theme="tizen.black" href="../../../../../css/dx.tizen.black.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="tizen.white" href="../../../../../css/dx.tizen.white.css" data-active="false" />
+
+		<script src="../../../../../js/jquery-1.11.2.min.js"></script>
+		<script src="../../../../../js/knockout-3.2.0.js"></script>
+		<script src="../../../../../js/globalize.min.js"></script>
+		<script src="../../../../../js/dx.chartjs.js"></script><script src="../../../../../js/dx.webappjs.js"></script>
+		<script src="../../../../../js/underscore-1.5.1.min.js"></script>
+		<script src="../../../../../js.js"></script>
+                                      
+	</head>
+	<body>
+		
+		<script id="jsCode">
+			$(function ()  
+				{
+   ;
+var dataSource = [
+  { country: "USA", gold: 36, silver: 38, bronze: 36 },
+  { country: "China", gold: 51, silver: 21, bronze: 28 },
+  { country: "Russia", gold: 23, silver: 21, bronze: 28 },
+  { country: "Britain", gold: 19, silver: 13, bronze: 15 },
+  { country: "Australia", gold: 14, silver: 15, bronze: 17 },
+  { country: "Germany", gold: 16, silver: 10, bronze: 15 }
+];
+
+$("#container").dxChart({
+    rotated: true,
+    pointSelectionMode: "multiple",
+    dataSource: dataSource,
+    commonSeriesSettings: {
+        argumentField: "country",
+        type: "stackedbar",
+        selectionStyle: {
+            hatching: {
+                direction: "left"
+            }
+        }
+    },
+    series: [
+      { valueField: "gold", name: "Gold Medals", color: "#ffd700" },
+      { valueField: "silver", name: "Silver Medals", color: "#c0c0c0" },
+      { valueField: "bronze", name: "Bronze Medals", color: "#cd7f32" }
+    ],
+    title: {
+        text: "Olympic Medals in 2008"
+    },
+    legend: {
+        verticalAlignment: "bottom",
+        horizontalAlignment: "center"
+    },
+    onPointClick: function(e) {
+		var point = e.target;
+        point.isSelected() ? point.clearSelection() : point.select();
+    }
+});
+}
+
+			);
+		</script>
+		
+		<div class="header">
+			<div class="content">
+                <div id="onlinedemo" class="button"></div>
+				<div class = "logo">
+					<a class="logo" title="WidgetsJS Gallery" href="../../../../../index.html"></a>
+				</div>
+			</div>
+		</div>
+		<div class="line"></div>		
+		<div class="title ">
+			<h1>Charts</h1>&nbsp;&nbsp;&nbsp;<h2>Multiple Point Selection</h2>
+		</div>
+		<div class="content containerPlaceholder">
+			<div class="tab dark-theme">
+				<div class="text">Dark Theme</div>
+			</div>
+			<div class="tab light-theme active">
+				<div class="text">Light Theme</div>
+             </div> 
+			<div class="pane dx-theme-desktop">
+				<div class="long-title"><h3></h3></div>
+					<div id="full">			
+					<div id="container" style="width: 100%; height: 440px;"></div>					
+					</div>
+					<div class="credits">www.nytimes.com</div>
+
+			</div>
+		</div>
+		
+		<script id="html" type="html/template">
+		<div id="container" style="width: 100%; height: 440px;"></div>
+		</script>
+        <script>
+            $("#onlinedemo.button").dxButton({
+                text: "Online Demo Gallery",
+                onClick: function () { document.location.href = "http://js.devexpress.com/Demos/WidgetsGallery/" }
+            });
+        </script>
+	</body>
+</html>

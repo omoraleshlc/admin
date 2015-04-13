@@ -1,0 +1,462 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>		
+		<title>Right-To-Left Support</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link href="../../../../../styles.css" rel="stylesheet" />
+
+
+		<!-- Theme -->
+		<link href="../../../../../css/dx.common.css" rel="stylesheet" />
+	    <link rel="dx-theme" data-theme="generic.dark" href="../../../../../css/dx.dark.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="generic.light" href="../../../../../css/dx.light.css" data-active="true" />
+	    <link rel="dx-theme" data-theme="android.holo-dark" href="../../../../../css/dx.android.holo-dark.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="android.holo-light" href="../../../../../css/dx.android.holo-light.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="win8.black" href="../../../../../css/dx.win8.black.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="win8.white" href="../../../../../css/dx.win8.white.css" data-active="false" />
+		<link rel="dx-theme" data-theme="ios" href="../../../../../css/dx.ios.default.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="ios7" href="../../../../../css/dx.ios7.default.css" data-active="false" />
+		<link rel="dx-theme" data-theme="tizen.black" href="../../../../../css/dx.tizen.black.css" data-active="false" />
+	    <link rel="dx-theme" data-theme="tizen.white" href="../../../../../css/dx.tizen.white.css" data-active="false" />
+
+		<script src="../../../../../js/jquery-1.11.2.min.js"></script>
+		<script src="../../../../../js/knockout-3.2.0.js"></script>
+		<script src="../../../../../js/globalize.min.js"></script>
+		<script src="../../../../../js/dx.chartjs.js"></script><script src="../../../../../js/dx.webappjs.js"></script>
+		<script src="../../../../../js/underscore-1.5.1.min.js"></script>
+		<script src="../../../../../js.js"></script>
+                                      
+	</head>
+	<body>
+		<style>.dx-fieldset {
+	margin-bottom: 20px;
+}
+
+.right {
+	height: 400px;
+	float: right;
+	width: 68%;
+}
+
+.treeview-container {
+	min-height: 400px;
+	width: 28%;
+}
+
+.menu-container {
+	height: 100px;
+}
+
+.accordion-container {
+	height: 300px;
+}
+
+sup {
+    font-size: 0.8em;
+    vertical-align: super;
+    line-height: 0;
+}</style>
+		<script id="jsCode">
+			$(function ()  
+				{
+   var continents = [{
+    id: "1",
+    text: "Africa",
+    textAr: "أفريقيا",
+    items: [
+        {
+        id: "1_2",
+        text: "Ethiopia",
+        textAr: "أثيوبيا",
+        items: [{
+            id: "1_2_1",
+            text: "Addis Ababa",
+            textAr: "أديس أبابا"
+        }, {
+            id: "1_2_2",
+            text: "Dire Dawa",
+            textAr: "دير داوا"
+        }]
+    },
+    {
+        id: "1_1",
+        text: "Nigeria",
+        textAr: "نيجيريا",
+        items: [{
+            id: "1_1_1",
+            text: "Lagos",
+            textAr: "لاغوس"
+        }, {
+            id: "1_1_2",
+            text: "Kano",
+            textAr: "كانو"
+        }]
+    } 
+]
+
+}, {
+    id: "2",
+    text: "Asia",
+    textAr: "آسيا",
+    items: [{
+        id: "2_1",
+        text: "China",
+        textAr: "الصين",
+        items: [{
+            id: "2_1_1",
+            text: "Beijing",
+            textAr: "بكين"
+        }, {
+            id: "2_1_2",
+            text: "Shanghai",
+            textAr: "شنغهاي"
+        }]
+    }, {
+        id: "2_2",
+        text: "India",
+        textAr: "الهند",
+        items: [{
+            id: "2_2_1",
+            text: "Indianapolis",
+            textAr: "انديانابوليس"
+        }, {
+            id: "2_2_2",
+            text: "New Delhi",
+            textAr: "نيودلهي"
+        }]
+    }]
+
+}, {
+    id: "3",
+    text: "Australia",
+    textAr: "أستراليا",
+    items: [{
+        id: "3_1",
+        text: "Australia",
+        textAr: "أستراليا",
+        items: [{
+            id: "3_1_1",
+            text: "Canberra",
+            textAr: "كانبيرا"
+        }, {
+            id: "3_1_2",
+            text: "Melbourne",
+            textAr: "ملبورن"
+        }, {
+            id: "3_1_3",
+            text: "Sydney",
+            textAr: "سيدني"
+        }]
+    }]
+
+}, {
+    id: "4",
+    text: "Europe",
+    textAr: "أوروبا",
+    items: [{
+        id: "4_1",
+        text: "Germany",
+        textAr: "ألمانيا",
+        items: [{
+            id: "4_1_1",
+            text: "Berlin",
+            textAr: "البرلينية"
+        }, {
+            id: "4_1_2",
+            text: "Hamburg",
+            textAr: "هامبورغ"
+        }]
+    }, {
+        id: "4_2",
+        text: "Russia",
+        textAr: "روسيا",
+        items: [{
+            id: "4_2_1",
+            text: "Moscow",
+            textAr: "موسكو"
+        }, {
+            id: "4_2_2",
+            text: "Saint Petersburg",
+            textAr: "سانت بطرسبرغ"
+        }]
+    }]
+
+}, {
+    id: "5",
+    text: "North America",
+    textAr: "أمريكا الشمالية",
+    items: [{
+        id: "5_2",
+        text: "Mexico",
+        textAr: "المكسيك",
+        items: [{
+            id: "5_2_1",
+            text: "Mexico City",
+            textAr: "مكسيكو سيتي"
+        }, {
+            id: "5_2_2",
+            text: "Guadalajara",
+            textAr: "غوادالاخارا"
+        }]
+    }, {
+        id: "5_1",
+        text: "United States",
+        textAr: "الولايات المتحدة الأمريكية",
+        items: [{
+            id: "5_1_1",
+            text: "New York",
+            textAr: "نيويورك"
+        }, {
+            id: "5_1_2",
+            text: "Washington",
+            textAr: "واشنطن"
+        }]
+    }]
+}, {
+    id: "6",
+    text: "South America",
+    textAr: "أمريكا الجنوبية",
+    items: [{
+        id: "6_1",
+        text: "Brazil",
+        textAr: "البرازيل",
+        items: [{
+            id: "6_1_1",
+            text: "Brasilia",
+            textAr: "برازيليا"
+        }, {
+            id: "6_1_2",
+            text: "Sao Paulo",
+            textAr: "ساو باولو"
+        }]
+    }, {
+        id: "6_2",
+        text: "Colombia",
+        textAr: "كولومبيا",
+        items: [{
+            id: "6_2_1",
+            text: "Bogota",
+            textAr: "بوغوتا"
+        }, {
+            id: "6_2_2",
+            text: "Medellin",
+            textAr: "ميديلين"
+        }]
+    }]
+
+}];
+
+var europeCountries  = [{
+    nameAr: "ألمانيا",
+    nameEn: "Germany",
+    population: 80523700,
+    area: 357021,
+    capitalAr: "البرلينية",
+    capitalEn: "Berlin",
+    Accession: 1957
+}, {
+    nameAr: "فرنسا",
+    nameEn: "France",
+    population: 65633200,
+    area: 674843,
+    capitalAr: "باريس",
+    capitalEn: "Paris",
+    Accession: 1957
+}, {
+    nameAr: "إيطاليا",
+    nameEn: "Italy",
+    population: 59685200,
+    area: 301338,
+    capitalAr: "روما",
+    capitalEn: "Rome",
+    Accession: 1957
+}, {
+    nameAr: "إسبانيا",
+    nameEn: "Spain",
+    population: 46704300,
+    area: 504030,
+    capitalAr: "مدريد",
+    capitalEn: "Madrid"
+}];;
+DevExpress.ui.setTemplateEngine('underscore');
+
+var treeViewWidget = $("#treeview").dxTreeView({
+	dataSource: continents,
+	displayExpr: "text"
+}).dxTreeView("instance");
+
+var menuWidget = $("#menu").dxMenu({
+	dataSource: continents 
+}).dxMenu("instance");
+
+var arabicAccordionOptions = {
+	itemTitleTemplate: function(data) {
+		return $("<div>" + data.nameAr + "</div>")
+	},
+	itemTemplate: $("#arabic-accordion-template")
+}
+
+var englishAccordionOptions = {
+	itemTitleTemplate: function(data) {
+		return $("<div>" + data.nameEn + "</div>")
+	},
+	itemTemplate: $("#english-accordion-template")
+}
+
+var accordionWidget = $("#accordion").dxAccordion({
+	dataSource: europeCountries,
+	itemTitleTemplate: englishAccordionOptions.itemTitleTemplate,
+	itemTemplate: englishAccordionOptions.itemTemplate
+}).dxAccordion("instance");
+
+var languages = ["Arabic (Right-to-Left direction)", "English (Left-to-Right direction)"];
+
+$("#select-language").dxSelectBox({
+	items: languages,
+	value: languages[1],
+	onValueChanged: function(data) {
+		var isRTL = data.value === languages[0];
+
+		treeViewWidget.option("displayExpr", isRTL ? "textAr" : "text");
+		treeViewWidget.option("rtlEnabled", isRTL);		
+
+		menuWidget.option("rtlEnabled", isRTL);
+		menuWidget.option("itemTemplate", isRTL ? $("#arabic-menu-template") : "item");
+
+		accordionWidget.option("rtlEnabled", isRTL);
+		accordionWidget.option("itemTitleTemplate", isRTL? arabicAccordionOptions.itemTitleTemplate : englishAccordionOptions.itemTitleTemplate);
+		accordionWidget.option("itemTemplate", isRTL? arabicAccordionOptions.itemTemplate : englishAccordionOptions.itemTemplate);
+	}
+});
+}
+
+			);
+		</script>
+		
+		<div class="header">
+			<div class="content">
+                <div id="onlinedemo" class="button"></div>
+				<div class = "logo">
+					<a class="logo" title="WidgetsJS Gallery" href="../../../../../index.html"></a>
+				</div>
+			</div>
+		</div>
+		<div class="line"></div>		
+		<div class="title ">
+			<h1>Appearance</h1>&nbsp;&nbsp;&nbsp;<h2>Right-To-Left Support</h2>
+		</div>
+		<div class="content containerPlaceholder">
+			<div class="tab dark-theme">
+				<div class="text">Dark Theme</div>
+			</div>
+			<div class="tab light-theme active">
+				<div class="text">Light Theme</div>
+             </div> 
+			<div class="pane dx-theme-desktop">
+				<div class="long-title"><h3></h3></div>
+					<div id="full">			
+					<div class="dx-fieldset">
+	<div class="dx-field">
+		<div class="dx-field-label">Language</div>
+		<div class="dx-field-value"><div id="select-language"></div></div>
+	</div>
+</div>
+<div >
+	<div class="right">
+		<div class="menu-container">
+			<div id="menu"></div>
+		</div>
+		<div class="accordion-container">
+			<div id="accordion"></div>
+		</div>
+	</div>
+	<div class="treeview-container">
+		<div id="treeview"></div>
+	</div>
+</div>
+
+<script type="text/html" id="arabic-menu-template">
+	<div>
+		<span class='dx-menu-item-text'><%= textAr %></span>
+		<span class='dx-menu-item-popout-container'> 
+			<%= (obj.items ? "<div class='dx-menu-item-popout'></div>" : "") %>
+		</span>
+	</div>
+</script>
+
+<script type="text/html" id="arabic-accordion-template">
+	<div>
+		<div>عاصمة: <%= capitalAr %> </div>
+		<div>عدد السكان: <%= population %> نسمة</div>
+		<div>المساحة:  <%= area %> كم<sup>2</sup></div>
+	</div>
+</script>
+
+<script type="text/html" id="english-accordion-template">
+	<div>
+		<div>Capital: <%= capitalEn %> </div>
+		<div>Population: <%= population %> people</div>
+		<div>Area:  <%= area %> km<sup>2</sup></div>
+	</div>
+</script>					
+					</div>
+					<div class="credits">www.wikipedia.org</div>
+
+			</div>
+		</div>
+		
+		<script id="html" type="html/template">
+		<div class="dx-fieldset">
+	<div class="dx-field">
+		<div class="dx-field-label">Language</div>
+		<div class="dx-field-value"><div id="select-language"></div></div>
+	</div>
+</div>
+<div >
+	<div class="right">
+		<div class="menu-container">
+			<div id="menu"></div>
+		</div>
+		<div class="accordion-container">
+			<div id="accordion"></div>
+		</div>
+	</div>
+	<div class="treeview-container">
+		<div id="treeview"></div>
+	</div>
+</div>
+
+<script type="text/html" id="arabic-menu-template">
+	<div>
+		<span class='dx-menu-item-text'><%= textAr %></span>
+		<span class='dx-menu-item-popout-container'> 
+			<%= (obj.items ? "<div class='dx-menu-item-popout'></div>" : "") %>
+		</span>
+	</div>
+</script>
+
+<script type="text/html" id="arabic-accordion-template">
+	<div>
+		<div>عاصمة: <%= capitalAr %> </div>
+		<div>عدد السكان: <%= population %> نسمة</div>
+		<div>المساحة:  <%= area %> كم<sup>2</sup></div>
+	</div>
+</script>
+
+<script type="text/html" id="english-accordion-template">
+	<div>
+		<div>Capital: <%= capitalEn %> </div>
+		<div>Population: <%= population %> people</div>
+		<div>Area:  <%= area %> km<sup>2</sup></div>
+	</div>
+</script>
+		</script>
+        <script>
+            $("#onlinedemo.button").dxButton({
+                text: "Online Demo Gallery",
+                onClick: function () { document.location.href = "http://js.devexpress.com/Demos/WidgetsGallery/" }
+            });
+        </script>
+	</body>
+</html>

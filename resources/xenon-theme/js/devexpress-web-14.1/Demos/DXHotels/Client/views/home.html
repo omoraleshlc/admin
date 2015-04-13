@@ -1,0 +1,117 @@
+﻿<div data-options="dxView : { name: 'home', title: 'HomePage'} ">
+    <div data-options="dxContent : { targetPlaceholder: 'content' } ">
+        <div class="image">
+            <div class="internal-block-for-search content">
+                <div class="hotel-search">
+                    <div class="title-search">
+                        <p>HOTEL SEARCH</p>
+                    </div>
+                    <div class="selectbox-search">
+                        <div class="field-label">Location</div>
+                        <div class="selectbox-location" data-bind="dxSelectBox: { items: selectBoxData, displayExpr: 'City', valueExpr:'ID', placeholder: loading, value: cityID }, dxValidator: { name: 'Location', validationRules: [{ type: 'required' }]}">
+                        </div>
+                    </div>
+                    <div class="check-date">
+                        <div class="field-label">
+                            <div class="label-out">Check out</div>
+                            <div class="label-in">Check in</div>
+                        </div>
+                        <div class="check-in" data-bind="dxDateBox: { value: minDate, format: 'date', min: minDateCheckIn, width: 180 }, dxValidator: { name: 'Check in', validationRules: [{ type: 'required' }]}"></div>
+                        <div class="check-out" data-bind="dxDateBox: { value: maxDate, format:'date', min: minDateCheckOut, max: maxDateCheckOut, width: 170 }, dxValidator: { name: 'Check out', validationRules: [{ type: 'required' }]}"></div>
+                    </div>
+                    <div class="field-label">
+                        <div class="label-rooms">Rooms</div>
+                        <div class="label-adults">Adults</div>
+                        <div class="label-children">Children</div>
+                    </div>
+                    <div class="rooms">
+                        <div class="adults">
+                            <div class="chldren-selectbox" data-bind="dxSelectBox: { dataSource: numberOfChildren, placeholder: '', value: children }"></div>
+                            <div class="adult-selectbox" data-bind="dxSelectBox: { dataSource: numberOfAdults, placeholder: '', value: adults }, dxValidator: { name: 'Adults', validationRules: [{ type: 'required' }]}"></div>
+                        </div>
+                        <div class="room-selectbox" data-bind="dxSelectBox: { dataSource: numberOfRooms, placeholder: '', value: rooms }, dxValidator: { name: 'Rooms', validationRules: [{ type: 'required' }]}"></div>
+                    </div>
+                    <div class="error-message">
+                        <div data-bind="dxValidationSummary: { height:20 }"></div>
+                    </div>
+                    <div class="button-search">
+                        <div class="search" data-bind="dxButton: {text:'SEARCH', clickAction: searchClick }"></div>
+                    </div>
+                </div>
+                <div class="hotel-powered">
+                    <div id="gross-text"></div>
+                    <p id="small-text">powered by DevExtreme</p>
+                </div>
+            </div>
+        </div>
+        <div class="external-block-offer" data-bind="visible: offers().length > 0">
+            <div class="content">
+                <div class="offers" data-bind="foreach: offers, css: { one: offers().length == 1, two: offers().length == 2 }">
+                    <div class="first-offer offer" data-bind="attr: { class: name + '-offer offer'}">
+                        <div class="label-offer">
+                            <div class="closeOffer" data-bind="click: $parent.closeOffer">
+                            </div>
+                            <div data-bind="attr: { class: name + '-label label' }"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gallery">
+            <div class="label-gallery">
+                SPECIAL OFFERS
+            </div>
+            <div class="gallery-container" data-bind="dxGallery: { dataSource: galleryData, selectedIndex: indexImg, height: 440, width: 920, noDataText: loading, showIndicator: false, itemSelectAction: showChangeImg, itemClickAction: specialOffers }">
+                <div data-options="dxTemplate: { name: 'item' }">
+                    <div class="hotel">
+                        <div class="name" data-bind="text: name"></div>
+                        <div data-bind="text: location"></div>
+                        <div class="price" data-bind="text: price"></div>
+                    </div>
+                    <img data-bind="attr: { src: src }" /><br />
+                </div>
+            </div>
+        </div>
+        <div class="external-minigallary">
+            <div class="mini-gallery" data-bind="foreach: galleryData, css: { 'mini-gallery-to-left': transformSlider() }">
+                <div class="external-padding">
+                    <div data-bind=" css: { 'current-img': index === $parent.indexImg() }">
+                        <div data-bind=" css: { 'white-pading': index === $parent.indexImg() }">
+                        </div>
+                    </div>
+                    <img class="small-image" data-bind=" attr: { src: src }, click: $parent.changePicture">
+                </div>
+            </div>
+        </div>
+        <div class="external-for-low-parts">
+            <div class="parts">
+                <div class="first-part">
+                    <strong>Getting Started Today</strong>
+                    <p>
+                        DevExtreme Subscription includes
+                        Optimized HTML5 JavaScript SPA Framework
+                        and 30+ High Performance HTML5 JavaScript Widgets.
+                    </p>
+                    <a href="http://js.devexpress.com/">Download your free 30-day trial</a>
+                </div>
+                <div class="second-part">
+                    <strong>We Are Here to Help</strong>
+                    <p>
+                        Tell us how we can help you build the next
+                        great JavaScript Mobile or Web App.
+                    </p>
+                    <a href="mailto:info@devexpress.com">info@devexpress.com</a>
+                </div>
+                <div>
+                    <strong>The following DevExtreme Widgets<br />were used on this page:</strong>
+                    <p>
+                        dxGallery<br />
+                        dxPopup<br />
+                        dxCalendar<br />
+                        dxSelectBox<br />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
